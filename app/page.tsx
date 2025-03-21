@@ -14,10 +14,15 @@ const fadeInUp = {
 
 export default function LandingPage() {
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://tally.so/widgets/embed.js";
-    script.async = true;
-    document.body.appendChild(script);
+    if (typeof window !== "undefined") {
+      const script = document.createElement("script");
+      script.src = "https://tally.so/widgets/embed.js";
+      script.async = true;
+      script.onload = () => {
+        console.log("Tally script loaded");
+      };
+      document.body.appendChild(script);
+    }
   }, []);
 
   return (

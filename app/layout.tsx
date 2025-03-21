@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Waivify | Easy Digital Waivers & Consent Forms",
-  description: "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
+  description:
+    "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
   keywords: [
     "digital waivers",
     "consent forms",
@@ -20,7 +22,8 @@ export const metadata = {
   ],
   openGraph: {
     title: "Waivify | Easy Digital Waivers & Consent Forms",
-    description: "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
+    description:
+      "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
     url: "https://www.waivify.com",
     siteName: "Waivify",
     images: [
@@ -35,7 +38,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Waivify | Easy Digital Waivers & Consent Forms",
-    description: "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
+    description:
+      "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
     images: ["/logo.png"],
   },
 };
@@ -46,8 +50,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang='en'>
+      <body className={inter.className}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
