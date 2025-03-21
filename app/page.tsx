@@ -23,6 +23,8 @@ export default function LandingPage() {
       };
       document.body.appendChild(script);
     }
+
+    console.log(process.env.NEXT_PUBLIC_TALLY_ID);
   }, []);
 
   return (
