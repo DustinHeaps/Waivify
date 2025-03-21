@@ -15,7 +15,6 @@ const fadeInUp = {
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
-      {/* Logo Section */}
       <motion.div className="flex justify-center pt-10" initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeInUp}>
         <Image src={Logo} alt="Waivify Logo" width={200} height={200} />
       </motion.div>
