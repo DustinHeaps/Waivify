@@ -5,6 +5,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
+import { UploadButton } from '@uploadthing/react';
+import type { OurFileRouter } from "@/app/api/uploadthing/core";
+import { uploadSignature } from '@/app/actions/waiver';
+
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -30,15 +34,33 @@ export default function SimpleWaiverForm() {
 
   const sigPadRef = useRef<any>(null);
 
-  const onSubmit = (data: FormData) => {
-    
+  const onSubmit = async (data: FormData) => {
     const signatureDataURL = sigPadRef.current?.toDataURL();
-    console.log({ ...data, signature: signatureDataURL });
-    // Send to backend or storage
+  
+    if (!signatureDataURL) {
+      console.warn("No signature captured");
+      return;
+    }
+  
+    try {
+      const blob = await (await fetch(signatureDataURL)).blob();
+      const file = new File([blob], "signature.png", { type: "image/png" });
+  
+      const formData = new FormData();
+      formData.append("file", file); 
+  
+      const res = await uploadSignature(formData);
+  
+      console.log("Uploaded signature result:", res);
+      console.log({ ...data });
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
   };
-
+  
   return (
-    <form
+    <form  
+    method="post"
       onSubmit={handleSubmit(onSubmit)}
       className="max-w-md mx-auto space-y-4 p-6 border rounded bg-white shadow-md"
     >
@@ -88,6 +110,8 @@ export default function SimpleWaiverForm() {
           <p className="text-red-500 text-sm">{errors.liability.message}</p>
         )}
       </div>
+
+    
 
       <button
         type="submit"
