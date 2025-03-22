@@ -42,6 +42,9 @@ export const metadata = {
       "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
     images: ["/logo.png"],
   },
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
