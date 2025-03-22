@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -23,12 +24,25 @@ export default function LandingPage() {
       };
       document.body.appendChild(script);
     }
-
-
   }, []);
 
   return (
     <div className='min-h-screen bg-gray-900 text-white p-6'>
+      <div className='absolute top-6 right-6 z-50'>
+        
+        <SignedOut>
+          <SignInButton mode='modal'>
+            <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
+              Get Started
+            </button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+         
+      </div>
+
       <motion.div
         className='flex justify-center pt-10'
         initial='hidden'
