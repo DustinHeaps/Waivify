@@ -1,6 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { UTApi } from "uploadthing/server";
+import { prisma } from "@/lib/prisma";
 
 const f = createUploadthing();
 
@@ -23,21 +24,29 @@ export const ourFileRouter = {
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
       const user = await auth(req);
+      const formData = await req.formData();
+      const name = formData.get("name") as string;
+      const date = formData.get("date") as string;
+     
 
       // If you throw, the user will not be able to upload
       if (!user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId: user.id, name, date };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
+      await prisma.signature.create({
+        data: {
+          name: metadata.name,
+          date: new Date(metadata.date),
+          fileKey: file.key,
+        },
+      });
 
-      console.log("file url", file.ufsUrl);
-
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId || 'anon' };
+      return {
+        uploadedBy: metadata.userId || "anon",
+      };
     }),
 } satisfies FileRouter;
 
