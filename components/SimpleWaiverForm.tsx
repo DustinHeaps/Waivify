@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
 import { uploadSignature } from "@/app/actions/waiver";
+import { useRouter } from "next/navigation";
+
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -21,6 +23,8 @@ const WaiverSchema = z.object({
 type FormData = z.infer<typeof WaiverSchema>;
 
 export default function SimpleWaiverForm() {
+
+const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -49,10 +53,9 @@ export default function SimpleWaiverForm() {
       formData.append("name", data.name);
       formData.append("date", data.date);
 
-      const res = await uploadSignature(formData);
+     const res = await uploadSignature(formData);
 
-      console.log("Uploaded signature result:", res);
-      console.log({ ...data });
+      router.push(`/waiver/confirmation/${res.id}`);
     } catch (error) {
       console.error("Upload failed:", error);
     }
