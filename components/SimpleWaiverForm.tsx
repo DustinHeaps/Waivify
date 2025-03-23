@@ -105,7 +105,7 @@ const router = useRouter();
       </div>
 
       <div>
-        <label className='flex items-center space-x-2'>
+        <label className='flex  items-center space-x-2'>
           <input type='checkbox' {...register("liability" as const)} />
           <span>I release liability for this service</span>
         </label>

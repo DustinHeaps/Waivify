@@ -29,7 +29,6 @@ export default function LandingPage() {
   return (
     <div className='min-h-screen bg-gray-900 text-white p-6'>
       <div className='absolute top-6 right-6 z-50'>
-        
         <SignedOut>
           <SignInButton mode='modal'>
             <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
@@ -40,7 +39,6 @@ export default function LandingPage() {
         <SignedIn>
           <UserButton />
         </SignedIn>
-         
       </div>
 
       <motion.div
@@ -91,14 +89,19 @@ export default function LandingPage() {
         <h2 className='text-3xl font-semibold mb-8 text-center text-teal-400'>
           Perfect for:
         </h2>
-        <ul className='grid grid-cols-2 gap-4 text-left list-disc list-inside text-gray-300'>
-          <li>Tattoo Shops</li>
-          <li>Yoga & Fitness Studios</li>
-          <li>Pet Groomers</li>
-          <li>Tour Guides & Rentals</li>
-          <li>Small Clinics</li>
-          <li>Personal Care Pros</li>
-        </ul>
+
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-300 text-left'>
+          <ul className='space-y-2 list-disc list-inside'>
+            <li>Tattoo Shops</li>
+            <li>Pet Groomers</li>
+            <li>Small Clinics</li>
+          </ul>
+          <ul className='space-y-2 list-disc list-inside'>
+            <li>Yoga & Fitness Studios</li>
+            <li>Tour Guides & Rentals</li>
+            <li>Personal Care Pros</li>
+          </ul>
+        </div>
       </motion.section>
 
       <motion.section

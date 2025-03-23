@@ -3,7 +3,14 @@
 import { utapi } from "../api/uploadthing/core";
 
 import { PrismaClient } from "@prisma/client";
+
+import { Resend } from "resend";
+
+import WaiverConfirmationEmail from "@/components/WaiverConfirmationEmail";
+import { auth, clerkClient } from "@clerk/nextjs";
+
 const prisma = new PrismaClient();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function uploadSignature(formData: FormData) {
   const files = formData.getAll("file") as File[];
@@ -44,8 +51,33 @@ export async function getSecureFileUrl(fileKey: string) {
 }
 
 export async function getSignatureById(id: string) {
-    return await prisma.signature.findUnique({
-      where: { id },
-      
-    });
-  }
+  return await prisma.signature.findUnique({
+    where: { id },
+  });
+}
+
+export async function sendEmail(id: string) {
+  const { userId } = auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const user = await clerkClient.users.getUser(userId);
+  const email = user.emailAddresses[0].emailAddress;
+
+  const signature = await getSignatureById(id);
+  if (!signature) throw new Error("Signature not found");
+
+ const response = await resend.emails.send({
+    from: process.env.EMAIL_FROM as string,
+    to: email, // user's email
+    subject: "✅ Waiver Confirmation",
+    react: WaiverConfirmationEmail({
+      name: signature.name,
+      id,
+      date: signature.uploadedAt.toISOString(),
+    }),
+  });
+
+  console.log("📨 Resend response:", response);
+
+  return { status: "success" };
+}
