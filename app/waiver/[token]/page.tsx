@@ -1,18 +1,30 @@
-import { getWaiverById } from "@/app/actions/waiver";
+import { getWaiverById, markWaiverViewed } from "@/app/actions/waiver";
 import { prisma } from "@/lib/prisma";
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
+import ExpiredWaiverPage from "../expired/page";
 
 type PageProps = {
   params: { token: string };
 };
 
 export default async function ViewWaiverPage({ params }: PageProps) {
-  debugger;
   const waiver = await prisma.waiver.findUnique({
     where: { token: params.token },
   });
 
-  if (!waiver) return notFound()
+  if (!waiver) return notFound();
+
+  // Expiration logic — 30 days after last view or creation
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+
+  const lastActivity = waiver.viewedAt || waiver.date;
+  if (lastActivity < cutoff) {
+    return <ExpiredWaiverPage waiverId={waiver.id} />;
+  }
+
+  // ✅ Mark as viewed if not already
+  await markWaiverViewed(waiver.id);
 
   return (
     <div className='max-w-xl mx-auto mt-10 border p-6 rounded shadow'>

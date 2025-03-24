@@ -16,12 +16,13 @@ model Signature {
 }
 
 model Waiver {
-  id        String   @id @default(cuid())
-  token     String   @unique
+  id        String    @id @default(cuid())
+  token     String    @unique
   name      String
-  date      DateTime @default(now())
+  date      DateTime  @default(now())
   ipAddress String
   signature String
   terms     Boolean
   liability Boolean
+  viewedAt  DateTime?
 }

@@ -12,6 +12,9 @@ import { auth, clerkClient } from "@clerk/nextjs";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
+import { z } from "zod";
+import { trackEvent } from "@/lib/posthog/posthog.server";
+
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -99,7 +102,7 @@ export async function sendEmail(id: string) {
   });
 
   await trackEvent({
-    event: "email_sent",
+    event: "waiver_email_sent",
     distinctId: id,
   });
 
@@ -120,17 +123,34 @@ export async function getWaiverById(token: string) {
       event: "waiver_retrieved",
       distinctId: waiver?.id,
     });
-    s;
     return waiver;
   } catch (error) {
     console.error("[getWaiverById]", error);
     return null;
   }
 }
+export async function markWaiverViewed(waiverId?: string) {
+  if (!waiverId) {
+    await trackEvent({
+      event: "waiver_viewed",
+      distinctId: "server",
+    });
 
-import { z } from "zod";
+    return { success: false };
+  }
 
-import { posthog, trackEvent } from "@/lib/posthog/posthog.server";
+  await prisma.waiver.update({
+    where: { id: waiverId },
+    data: { viewedAt: new Date() },
+  });
+
+  await trackEvent({
+    event: "waiver_viewed",
+    distinctId: waiverId,
+  });
+
+  return { success: true };
+}
 
 const WaiverSchema = z.object({
   name: z.string(),

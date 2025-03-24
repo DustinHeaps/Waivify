@@ -67,6 +67,13 @@ export default function WaiverConfirmationEmail({
               This confirmation was sent by Waivify. Questions? Reach out at{" "}
               <Link href='mailto:support@waivify.com'>support@waivify.com</Link>
             </Text>
+            <Img
+              src={`https://waivify.com/api/email?waiverId=${id}`}
+              width='1'
+              height='1'
+              alt=''
+              style={{ display: "none" }}
+            />
           </Container>
         </Body>
       </Tailwind>
