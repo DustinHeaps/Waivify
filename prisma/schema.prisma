@@ -14,3 +14,14 @@ model Signature {
   fileKey    String
   uploadedAt DateTime @default(now())
 }
+
+model Waiver {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  name      String
+  date      DateTime @default(now())
+  ipAddress String
+  signature String
+  terms     Boolean
+  liability Boolean
+}

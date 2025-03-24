@@ -3,11 +3,10 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
-import { uploadSignature } from "@/app/actions/waiver";
+import { saveWaiver, uploadSignature } from "@/app/actions/waiver";
 import { useRouter } from "next/navigation";
-
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -23,8 +22,10 @@ const WaiverSchema = z.object({
 type FormData = z.infer<typeof WaiverSchema>;
 
 export default function SimpleWaiverForm() {
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-const router = useRouter();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -36,13 +37,15 @@ const router = useRouter();
   const sigPadRef = useRef<any>(null);
 
   const onSubmit = async (data: FormData) => {
-    debugger;
     const signatureDataURL = sigPadRef.current?.toDataURL();
 
     if (!signatureDataURL) {
       console.warn("No signature captured");
       return;
     }
+
+    setIsLoading(true);
+    setError("");
 
     try {
       const blob = await (await fetch(signatureDataURL)).blob();
@@ -53,11 +56,23 @@ const router = useRouter();
       formData.append("name", data.name);
       formData.append("date", data.date);
 
-     const res = await uploadSignature(formData);
+      const signature = await uploadSignature(formData);
 
-      router.push(`/waiver/confirmation/${res.id}`);
+      const newWaiver = await saveWaiver({
+        name: data.name,
+        ipAddress: "192.168.1.1", // Optional: use a middleware or header to get IP
+        signature: signature,
+        terms: data.terms,
+        liability: data.liability,
+      });
+
+      console.log("Waiver saved", newWaiver);
+      router.push(`/waiver/confirmation/${signature.id}`);
     } catch (error) {
+      setError("Something went wrong. Please try again.");
       console.error("Upload failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -117,10 +132,11 @@ const router = useRouter();
       <button
         type='submit'
         className='bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed'
-        disabled={isSubmitting}
+        disabled={isLoading}
       >
-        {isSubmitting ? "Submitting..." : "Submit Waiver"}
+        {isLoading ? "Submitting..." : "Submit Waiver"}
       </button>
+      {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
     </form>
   );
 }
