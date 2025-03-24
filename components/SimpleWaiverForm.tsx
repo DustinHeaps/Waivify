@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
 import { saveWaiver, uploadSignature } from "@/app/actions/waiver";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),

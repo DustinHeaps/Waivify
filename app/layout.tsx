@@ -1,8 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import Providers from "./Providers";
-import { Toaster } from "@/components/ui/sonner"
+
+import { Toaster } from "@/components/ui/sonner";
+import { useEffect } from "react";
+import { initPostHog } from "@/lib/posthog/posthog";
+import AuthProvider from "./AuthProvider";
+import PostHogProvider from "@/lib/posthog/posthogProvider";
+import PostHogWrapper from "@/lib/posthog/posthogWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,14 +59,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Providers>
-      <html lang='en'>
-        <body className={inter.className}>
-          {children}
-          <Analytics />
-          <Toaster />
-        </body>
-      </html>
-    </Providers>
+    <AuthProvider>
+      <PostHogWrapper>
+        <html lang='en'>
+          <body className={inter.className}>
+            {children}
+            <Analytics />
+            <Toaster />
+          </body>
+        </html>
+      </PostHogWrapper>
+    </AuthProvider>
   );
 }

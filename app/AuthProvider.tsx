@@ -2,7 +2,8 @@
 
 import { ClerkProvider } from "@clerk/nextjs";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
+
   return (
     <ClerkProvider
       signInUrl='/sign-in'

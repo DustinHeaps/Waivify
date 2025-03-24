@@ -43,6 +43,11 @@ export async function uploadSignature(formData: FormData) {
     },
   });
 
+  await trackEvent({
+    event: "signature_saved",
+    distinctId: file.key,
+  });
+
   return saved;
 }
 
@@ -50,13 +55,26 @@ export async function getSecureFileUrl(fileKey: string) {
   if (!fileKey) throw new Error("File key is missing");
 
   const fileUrl = `https://utfs.io/f/${fileKey}`;
+
+  await trackEvent({
+    event: "filekey_retrieved",
+    distinctId: fileKey,
+  });
+
   return fileUrl;
 }
 
 export async function getSignatureById(id: string) {
-  return await prisma.signature.findUnique({
+  const signature = await prisma.signature.findUnique({
     where: { id },
   });
+
+  await trackEvent({
+    event: "signature_retrieved",
+    distinctId: id,
+  });
+
+  return signature;
 }
 
 export async function sendEmail(id: string) {
@@ -80,6 +98,11 @@ export async function sendEmail(id: string) {
     }),
   });
 
+  await trackEvent({
+    event: "email_sent",
+    distinctId: id,
+  });
+
   return { status: "success" };
 }
 
@@ -93,6 +116,11 @@ export async function getWaiverById(token: string) {
       where: { id: decoded.waiverId },
     });
 
+    await trackEvent({
+      event: "waiver_retrieved",
+      distinctId: waiver?.id,
+    });
+    s;
     return waiver;
   } catch (error) {
     console.error("[getWaiverById]", error);
@@ -101,6 +129,8 @@ export async function getWaiverById(token: string) {
 }
 
 import { z } from "zod";
+
+import { posthog, trackEvent } from "@/lib/posthog/posthog.server";
 
 const WaiverSchema = z.object({
   name: z.string(),
@@ -113,11 +143,7 @@ const WaiverSchema = z.object({
 export async function saveWaiver(data: unknown) {
   const id = uuidv4();
 
-  const token = jwt.sign(
-    { waiverId: id },
-    process.env.JWT_SECRET as string,
-    
-  );
+  const token = jwt.sign({ waiverId: id }, process.env.JWT_SECRET as string);
 
   const waiverInput = data as {
     name: string;
@@ -145,6 +171,11 @@ export async function saveWaiver(data: unknown) {
       ...cleanData,
       token,
     },
+  });
+
+  await trackEvent({
+    event: "waiver_saved",
+    distinctId: waiver.id,
   });
 
   return waiver;
