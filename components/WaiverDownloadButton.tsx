@@ -1,28 +1,46 @@
-'use client';
+"use client";
 
-import { getSecureFileUrl } from '@/app/actions/waiver';
-
+import { downloadWaiverPdf } from "@/app/actions/waiver";
+import { useTransition } from "react";
 
 type Props = {
-  fileKey: string;
+  waiverId: string;
 };
 
-export default function WaiverDownloadButton({ fileKey }: Props) {
+export default function WaiverDownloadButton({ waiverId }: Props) {
+  const [isPending, startTransition] = useTransition();
+
   const handleDownload = async () => {
-    try {
-      const url = await getSecureFileUrl(fileKey);
-      window.open(url, '_blank'); 
-    } catch (err) {
-      console.error('Download failed:', err);
-    }
+    startTransition(async () => {
+      try {
+        const buffer = await downloadWaiverPdf(waiverId); 
+
+        // Convert Buffer to Uint8Array for Blob
+        const uint8Array = new Uint8Array(buffer);
+        
+        const blob = new Blob([uint8Array], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+  
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `waiver-${waiverId}.pdf`;
+        a.click();
+  
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        console.error("Download failed", err);
+      }
+    });
   };
+  
 
   return (
     <button
       onClick={handleDownload}
-      className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded"
+      className='text-blue-500 hover:underline mr-1'
+      disabled={isPending}
     >
-      Download Signature
+      Download Waiver
     </button>
   );
 }

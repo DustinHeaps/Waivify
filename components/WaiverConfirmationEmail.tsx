@@ -21,6 +21,11 @@ export default function WaiverConfirmationEmail({
   id: string;
   date: string;
 }) {
+  const formattedDate = new Date(date).toLocaleString("en-US", {
+    dateStyle: "long",
+    timeStyle: "short",
+  });
+
   return (
     <Html>
       <Head />
@@ -49,7 +54,7 @@ export default function WaiverConfirmationEmail({
 
             <Text className='text-sm text-red-500'>
               <strong>Submitted on:</strong>{" "}
-              <span className='text-gray-600'>{date}</span>
+              <span className='text-gray-600'>{formattedDate}</span>
             </Text>
             <Link
               href={`https://waivify.com/waiver/confirmation/${id}`}

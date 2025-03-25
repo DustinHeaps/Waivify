@@ -1,6 +1,7 @@
 import { getSignatureById } from "@/app/actions/waiver";
 import { ReturnHomeButton } from "@/components/ReturnHomeButton";
 import { SendEmailButton } from "@/components/SendEmailButton";
+import WaiverDownloadButton from '@/components/WaiverDownloadButton';
 
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
@@ -10,6 +11,8 @@ export default async function ConfirmationPage({
 }: {
   params: { id: string };
 }) {
+  
+  
   const signature = await getSignatureById(params.id);
 
   if (!signature) {
@@ -40,12 +43,8 @@ export default async function ConfirmationPage({
       </div>
       <p className='text-sm mt-5'>
         <span>Need</span> a copy? <br />
-        <a
-          href={`/api/download/${signature.id}`}
-          className='text-blue-500 hover:underline mr-1'
-        >
-          Download waiver
-        </a>
+        <WaiverDownloadButton waiverId={signature.waiverId} />
+        
         or
         <SendEmailButton id={signature.id} />
       </p>

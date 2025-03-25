@@ -10,6 +10,9 @@ type PageProps = {
 export default async function ViewWaiverPage({ params }: PageProps) {
   const waiver = await prisma.waiver.findUnique({
     where: { token: params.token },
+    include: {
+      signature: true,
+    },
   });
 
   if (!waiver) return notFound();
@@ -48,7 +51,7 @@ export default async function ViewWaiverPage({ params }: PageProps) {
         <strong>Signature:</strong>
       </p>
       <img
-        src={`https://uploadthing.com/f/${waiver.signature}`}
+        src={`https://uploadthing.com/f/${waiver.signature?.fileKey}`}
         alt='Signature'
         className='mt-2 max-w-xs border'
       />

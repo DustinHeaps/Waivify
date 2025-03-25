@@ -13,6 +13,9 @@ model Signature {
   date       DateTime
   fileKey    String
   uploadedAt DateTime @default(now())
+
+  waiver   Waiver @relation(name: "WaiverSignature", fields: [waiverId], references: [id])
+  waiverId String @unique
 }
 
 model Waiver {
@@ -21,8 +24,10 @@ model Waiver {
   name      String
   date      DateTime  @default(now())
   ipAddress String
-  signature String
   terms     Boolean
   liability Boolean
   viewedAt  DateTime?
+
+  signature Signature? @relation(name: "WaiverSignature") // reverse relation
+
 }

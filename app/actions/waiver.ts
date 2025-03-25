@@ -11,14 +11,18 @@ import { auth, clerkClient } from "@clerk/nextjs";
 
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
+import { format } from "date-fns";
 
 import { z } from "zod";
 import { trackEvent } from "@/lib/posthog/posthog.server";
+import { DocumentProps, renderToBuffer } from "@react-pdf/renderer";
+import WaiverPDF from "@/components/WaiverPDF";
+import { createElement } from 'react';
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function uploadSignature(formData: FormData) {
+export async function uploadSignature(formData: FormData, waiverId: string) {
   const files = formData.getAll("file") as File[];
 
   if (!files || files.length === 0) {
@@ -37,12 +41,14 @@ export async function uploadSignature(formData: FormData) {
     throw new Error("Upload failed or missing file URL");
   }
 
-  // Save to DB
   const saved = await prisma.signature.create({
     data: {
       name,
       date,
       fileKey: file.key,
+      waiver: {
+        connect: { id: waiverId },
+      },
     },
   });
 
@@ -154,13 +160,16 @@ export async function markWaiverViewed(waiverId?: string) {
 
 const WaiverSchema = z.object({
   name: z.string(),
-  ipAddress: z.string().optional(),
-  signature: z.string().optional(),
+  ipAddress: z.string().default("0.0.0.0"),
+  signatureId: z.string().optional(),
   terms: z.boolean(),
   liability: z.boolean(),
+  date: z.string().transform((val) => new Date(val)),
 });
 
 export async function saveWaiver(data: unknown) {
+  console.log("Incoming data:", data);
+
   const id = uuidv4();
 
   const token = jwt.sign({ waiverId: id }, process.env.JWT_SECRET as string);
@@ -168,27 +177,28 @@ export async function saveWaiver(data: unknown) {
   const waiverInput = data as {
     name: string;
     ipAddress?: string;
-    signature?: { fileKey?: string };
+    signatureId?: string;
     terms: boolean;
     liability: boolean;
     token: string;
   };
 
-  const parsed = WaiverSchema.safeParse({
-    ...waiverInput,
-    signature: waiverInput.signature?.fileKey ?? undefined, // extract only what's needed
-  });
+  const parsed = WaiverSchema.safeParse(data);
+  if (!parsed.success) {
+    console.error("Zod error:", parsed.error.flatten());
+    throw new Error("Invalid form data");
+  }
+
+  const waiverData = parsed.data;
+
   if (!parsed.success) {
     throw new Error("Invalid form data");
   }
 
-  const cleanData = Object.fromEntries(
-    Object.entries(parsed.data).filter(([_, v]) => v !== undefined)
-  ) as Prisma.WaiverCreateInput;
-
   const waiver = await prisma.waiver.create({
     data: {
-      ...cleanData,
+      ...waiverData,
+      id,
       token,
     },
   });
@@ -199,4 +209,33 @@ export async function saveWaiver(data: unknown) {
   });
 
   return waiver;
+}
+
+
+export async function downloadWaiverPdf(waiverId: string) {
+  if (!waiverId) throw new Error("Missing waiverId");
+
+  const waiver = await prisma.waiver.findUnique({
+    where: { id: waiverId },
+    include: { signature: true },
+  });
+
+  if (!waiver || !waiver.signature) {
+    throw new Error("Waiver or signature not found.");
+  }
+  const formattedDate = format(waiver.signature.date, "MMMM d, yyyy")
+
+  const pdfBuffer = await renderToBuffer(
+    createElement(WaiverPDF, {
+      name: waiver.signature.name,
+      date: formattedDate,
+      waiverId: waiver.signature.id,
+      signatureUrl: `https://uploadthing.com/f/${waiver.signature.fileKey}`
+    }) as React.ReactElement
+  );
+
+  console.log("PDF buffer size:", pdfBuffer.byteLength);
+
+  return new Uint8Array(pdfBuffer);
+
 }

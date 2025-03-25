@@ -27,13 +27,17 @@ export const ourFileRouter = {
       const formData = await req.formData();
       const name = formData.get("name") as string;
       const date = formData.get("date") as string;
-     
 
       // If you throw, the user will not be able to upload
       if (!user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id, name, date };
+      return {
+        userId: user.id,
+        name,
+        date,
+        waiverId: formData.get("waiverId") as string,
+      };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       await prisma.signature.create({
@@ -41,6 +45,11 @@ export const ourFileRouter = {
           name: metadata.name,
           date: new Date(metadata.date),
           fileKey: file.key,
+          waiver: {
+            connect: {
+              id: metadata.waiverId,
+            },
+          },
         },
       });
 
