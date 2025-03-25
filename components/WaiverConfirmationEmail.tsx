@@ -12,15 +12,21 @@ import {
   Tailwind,
 } from "@react-email/components";
 
-export default function WaiverConfirmationEmail({
+import { getWaiverById } from "@/app/actions/waiver";
+
+export default async function WaiverConfirmationEmail({
   name,
   id,
   date,
+  waiverId,
 }: {
   name: string;
   id: string;
   date: string;
+  waiverId: string;
 }) {
+  const waiver = await getWaiverById(waiverId);
+
   const formattedDate = new Date(date).toLocaleString("en-US", {
     dateStyle: "long",
     timeStyle: "short",
@@ -57,13 +63,14 @@ export default function WaiverConfirmationEmail({
               <span className='text-gray-600'>{formattedDate}</span>
             </Text>
             <Link
-              href={`https://waivify.com/waiver/confirmation/${id}`}
+              href={`https://waivify.com/waiver/${waiver?.token}`}
               className='text-center text-sm bg-teal-600 text-white px-5 py-2 rounded-md inline-block'
             >
               View Your Waiver
             </Link>
+
             <Link
-              href={`https://waivify.com/api/download/${id}`}
+              href={`https://waivify.com/api/download?waiverId=${waiverId}`}
               className='text-sm text-blue-600 mt-4 block'
             >
               Download PDF Copy

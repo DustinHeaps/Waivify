@@ -17,7 +17,7 @@ import { z } from "zod";
 import { trackEvent } from "@/lib/posthog/posthog.server";
 import { DocumentProps, renderToBuffer } from "@react-pdf/renderer";
 import WaiverPDF from "@/components/WaiverPDF";
-import { createElement } from 'react';
+import { createElement } from "react";
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -86,7 +86,7 @@ export async function getSignatureById(id: string) {
   return signature;
 }
 
-export async function sendEmail(id: string) {
+export async function sendEmail(id: string, waiverId: string) {
   const { userId } = auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -104,6 +104,7 @@ export async function sendEmail(id: string) {
       name: signature.name,
       id,
       date: signature.uploadedAt.toISOString(),
+      waiverId,
     }),
   });
 
@@ -115,7 +116,7 @@ export async function sendEmail(id: string) {
   return { status: "success" };
 }
 
-export async function getWaiverById(token: string) {
+export async function getWaiverByToken(token: string) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       waiverId: string;
@@ -128,6 +129,23 @@ export async function getWaiverById(token: string) {
     await trackEvent({
       event: "waiver_retrieved",
       distinctId: waiver?.id,
+    });
+    return waiver;
+  } catch (error) {
+    console.error("[getWaiverByToken]", error);
+    return null;
+  }
+}
+
+export async function getWaiverById(waiverId: string) {
+  try {
+    const waiver = await prisma.waiver.findUnique({
+      where: { id: waiverId },
+    });
+
+    await trackEvent({
+      event: "waiver_retrieved",
+      distinctId: waiverId,
     });
     return waiver;
   } catch (error) {
@@ -211,7 +229,6 @@ export async function saveWaiver(data: unknown) {
   return waiver;
 }
 
-
 export async function downloadWaiverPdf(waiverId: string) {
   if (!waiverId) throw new Error("Missing waiverId");
 
@@ -223,19 +240,30 @@ export async function downloadWaiverPdf(waiverId: string) {
   if (!waiver || !waiver.signature) {
     throw new Error("Waiver or signature not found.");
   }
-  const formattedDate = format(waiver.signature.date, "MMMM d, yyyy")
+  const formattedDate = format(waiver.signature.date, "MMMM d, yyyy");
 
   const pdfBuffer = await renderToBuffer(
     createElement(WaiverPDF, {
       name: waiver.signature.name,
       date: formattedDate,
       waiverId: waiver.signature.id,
-      signatureUrl: `https://uploadthing.com/f/${waiver.signature.fileKey}`
+      signatureUrl: `https://uploadthing.com/f/${waiver.signature.fileKey}`,
     }) as React.ReactElement
   );
 
   console.log("PDF buffer size:", pdfBuffer.byteLength);
 
   return new Uint8Array(pdfBuffer);
+}
+
+export async function log404(path: string) {
+  trackEvent({
+    event: "404_page_view",
+    distinctId: "server",
+    properties: {
+      path,
+    },
+  });
+
 
 }

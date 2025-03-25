@@ -10,7 +10,7 @@ const transparentGif = Buffer.from(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const waiverId = searchParams.get("waiverId");
-  console.log("waiverId ", waiverId);
+  
   if (waiverId) {
     await trackEvent({
       event: "waiver_email_opened",

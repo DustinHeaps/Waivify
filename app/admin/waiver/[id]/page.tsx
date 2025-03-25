@@ -8,7 +8,7 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
   const waiverId = params.id;
 
   // Simulate fetching data (replace with real db call)
-  const waiver = await getWaiverById(waiverId); // your db call
+  const waiver = await getWaiverByToken(waiverId); // your db call
 
   if (!waiver) return notFound();
 
@@ -67,7 +67,7 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
 }
 
 // Dummy function - replace with real DB logic
-async function getWaiverById(id: string) {
+async function getWaiverByToken(id: string) {
   return {
     id,
     name: "John Doe",

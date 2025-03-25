@@ -3,10 +3,19 @@
 import { sendEmail } from "@/app/actions/waiver";
 import { toast } from "sonner";
 
-export function SendEmailButton({ id }: { id: string }) {
+export function SendEmailButton({
+  id,
+
+  waiverId,
+}: {
+  id: string;
+
+  waiverId: string;
+}) {
+  
   const handleClick = async () => {
     try {
-      await sendEmail(id);
+      await sendEmail(id, waiverId);
       toast("✉️ Email sent! Check your inbox.");
     } catch (err) {
       toast.error("Failed to send email.");

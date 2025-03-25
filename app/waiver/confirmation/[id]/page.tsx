@@ -15,6 +15,7 @@ export default async function ConfirmationPage({
   
   const signature = await getSignatureById(params.id);
 
+
   if (!signature) {
     notFound();
   }
@@ -46,7 +47,7 @@ export default async function ConfirmationPage({
         <WaiverDownloadButton waiverId={signature.waiverId} />
         
         or
-        <SendEmailButton id={signature.id} />
+        <SendEmailButton id={signature.id} waiverId={signature.waiverId}  />
       </p>
     </div>
   );

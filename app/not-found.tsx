@@ -1,17 +1,19 @@
-"use client";
-
 import Link from "next/link";
+import { log404 } from "./actions/waiver";
+import { headers } from 'next/headers';
 
-export default function NotFound() {
+export default async function NotFound() {
+  const pathname = headers().get("x-next-url") || "unknown";
+  await log404(pathname);
+
   return (
     <div className='max-w-md mx-auto mt-20 bg-white p-6 rounded-xl shadow-md text-center'>
       <div className='bg-white rounded-xl p-8 max-w-md text-center'>
         <h1 className='text-2xl font-bold text-red-600 mb-2'>
-          🛑 Waiver Not Found
+          🛑 Page Not Found
         </h1>
         <p className='text-gray-600 mb-6'>
-          Sorry, we couldn't find that waiver. It may have been deleted or the
-          link is incorrect.
+          The page you're looking for doesn’t exist or has been moved.
         </p>
 
         <Link
@@ -27,7 +29,7 @@ export default function NotFound() {
             href='mailto:support@yourapp.com'
             className='text-blue-500 hover:underline'
           >
-            Report an issue
+            Contact Support
           </a>
         </div>
       </div>

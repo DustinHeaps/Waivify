@@ -1,4 +1,4 @@
-import { getWaiverById, markWaiverViewed } from "@/app/actions/waiver";
+import { getWaiverByToken, markWaiverViewed } from "@/app/actions/waiver";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import ExpiredWaiverPage from "../expired/page";
