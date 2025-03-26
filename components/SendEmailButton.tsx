@@ -11,7 +11,7 @@ export function SendEmailButton({
   id: string;
   waiverId: string;
 }) {
-  const [emailSent, setEmailSent] = useState(true);
+  const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
   const handleClick = async () => {

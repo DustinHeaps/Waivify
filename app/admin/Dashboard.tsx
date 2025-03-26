@@ -10,6 +10,7 @@ import WeeklyCount from "./components/WeeklyCount";
 import { FaClipboardList } from "react-icons/fa";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { AnimatePresence, motion } from "framer-motion";
+import { deleteWaiver } from "../actions/waiver";
 
 type Props = {
   waivers: Waiver[];
@@ -20,6 +21,7 @@ export default function Dashboard({ waivers }: Props) {
   const [dateFilter, setDateFilter] = useState("all");
   const [waiverList, setWaiverList] = useState(waivers);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const filteredWaivers = useFilteredWaivers(
     waiverList,
@@ -27,11 +29,28 @@ export default function Dashboard({ waivers }: Props) {
     dateFilter
   );
 
-  const deleteWaiver = (id: string) => {
-    setWaiverList((prev) => prev.filter((w) => w.id !== id));
+  const handleDelete = async (id: string) => {
+    const previousList = [...waiverList];
 
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 2500);
+    try {
+      // Server-side deletion first
+      const res = await deleteWaiver(id);
+
+      if (!res?.success) {
+        throw new Error("Delete failed");
+      }
+  
+      // ✅ Optimistic UI (only if delete didn't throw)
+      setWaiverList((prev) => prev.filter((w) => w.id !== id));
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2500);
+    } catch (err) {
+      console.error("Failed to delete waiver:", err);
+      // Rollback UI if the deletion fails
+      setWaiverList(previousList);
+      setShowError(true); // you can animate or display an error
+      setTimeout(() => setShowError(false), 3000);
+    }
   };
 
   return (
@@ -77,6 +96,11 @@ export default function Dashboard({ waivers }: Props) {
             <span>✅</span>
             <span>Waiver deleted successfully.</span>
           </motion.div>
+        )}
+        {showError && (
+          <p className='text-red-600 text-sm mt-2'>
+            ❌ Failed to delete waiver. Please try again.
+          </p>
         )}
       </AnimatePresence>
       <SwitchTransition mode='out-in'>
@@ -125,7 +149,7 @@ export default function Dashboard({ waivers }: Props) {
                 waivers={filteredWaivers}
                 searchQuery={searchQuery}
                 dateFilter={dateFilter}
-                onDelete={deleteWaiver}
+                onDelete={handleDelete}
               />
             )}
           </>

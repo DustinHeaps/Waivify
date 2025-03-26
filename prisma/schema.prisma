@@ -14,7 +14,7 @@ model Signature {
   fileKey    String
   uploadedAt DateTime @default(now())
 
-  waiver   Waiver @relation(name: "WaiverSignature", fields: [waiverId], references: [id])
+  waiver   Waiver @relation(name: "WaiverSignature", fields: [waiverId], references: [id], onDelete: Cascade)
   waiverId String @unique
 }
 
@@ -28,6 +28,6 @@ model Waiver {
   liability Boolean
   viewedAt  DateTime?
 
-  signature Signature? @relation(name: "WaiverSignature") // reverse relation
+  signature Signature? @relation(name: "WaiverSignature") 
 
 }

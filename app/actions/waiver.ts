@@ -18,6 +18,7 @@ import { trackEvent } from "@/lib/posthog/posthog.server";
 import { DocumentProps, renderToBuffer } from "@react-pdf/renderer";
 import WaiverPDF from "@/components/WaiverPDF";
 import { createElement } from "react";
+import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -56,24 +57,23 @@ export async function uploadSignature(formData: FormData, waiverId: string) {
     event: "signature_saved",
     distinctId: file.key,
   });
-
+  revalidatePath("/admin");
   return saved;
 }
-
 
 export async function getAllWaivers() {
   try {
     const waivers = await prisma.waiver.findMany({
-      orderBy: { date: 'desc' },
+      orderBy: { date: "desc" },
       include: {
-        signature: true, 
+        signature: true,
       },
     });
 
     return waivers;
   } catch (error) {
-    console.error('Failed to fetch waivers:', error);
-    throw new Error('Could not fetch waivers');
+    console.error("Failed to fetch waivers:", error);
+    throw new Error("Could not fetch waivers");
   }
 }
 
@@ -281,6 +281,18 @@ export async function log404(path: string) {
       path,
     },
   });
+}
 
+export async function deleteWaiver(id: string) {
+  try {
+    await prisma.waiver.delete({
+      where: { id },
+    });
 
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete waiver:", error);
+    return { success: false };
+  }
 }
