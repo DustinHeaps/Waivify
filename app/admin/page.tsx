@@ -1,13 +1,17 @@
-
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import Dashboard from "./Dashboard";
+import { getAllWaivers } from '../actions/waiver';
 
-export default function AdminPage() {
+export default async function AdminPage() {
   const { userId } = auth();
 
   if (!userId) {
-    redirect("/sign-in"); 
+    return redirect("/");
   }
 
-  return <div className="p-6">Welcome Admin! View submitted waivers here soon.</div>;
+  const waivers = await getAllWaivers()
+
+  return <Dashboard waivers={waivers} />;
 }
+

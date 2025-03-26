@@ -60,6 +60,23 @@ export async function uploadSignature(formData: FormData, waiverId: string) {
   return saved;
 }
 
+
+export async function getAllWaivers() {
+  try {
+    const waivers = await prisma.waiver.findMany({
+      orderBy: { date: 'desc' },
+      include: {
+        signature: true, 
+      },
+    });
+
+    return waivers;
+  } catch (error) {
+    console.error('Failed to fetch waivers:', error);
+    throw new Error('Could not fetch waivers');
+  }
+}
+
 export async function getSecureFileUrl(fileKey: string) {
   if (!fileKey) throw new Error("File key is missing");
 

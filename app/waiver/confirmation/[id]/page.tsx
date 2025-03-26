@@ -1,7 +1,7 @@
 import { getSignatureById } from "@/app/actions/waiver";
 import { ReturnHomeButton } from "@/components/ReturnHomeButton";
 import { SendEmailButton } from "@/components/SendEmailButton";
-import WaiverDownloadButton from '@/components/WaiverDownloadButton';
+import WaiverDownloadButton from "@/components/WaiverDownloadButton";
 
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
@@ -11,10 +11,7 @@ export default async function ConfirmationPage({
 }: {
   params: { id: string };
 }) {
-  
-  
   const signature = await getSignatureById(params.id);
-
 
   if (!signature) {
     notFound();
@@ -42,12 +39,14 @@ export default async function ConfirmationPage({
 
         <ReturnHomeButton />
       </div>
+
       <p className='text-sm mt-5'>
         <span>Need</span> a copy? <br />
-        <WaiverDownloadButton waiverId={signature.waiverId} />
-        
-        or
-        <SendEmailButton id={signature.id} waiverId={signature.waiverId}  />
+        <div className='flex justify-center relative'>
+          <WaiverDownloadButton waiverId={signature.waiverId} />
+          or
+          <SendEmailButton id={signature.id} waiverId={signature.waiverId} />
+        </div>
       </p>
     </div>
   );
