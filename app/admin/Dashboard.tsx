@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Filters } from "./components/Filters";
-// import WeeklyCount from "./components/WeeklyCount";
+import { useEffect, useMemo, useState } from "react";
 import WaiverTable from "./components/WaiverTable";
 import { useFilteredWaivers } from "./hooks/useFilteredWaivers";
 import { Waiver } from "@/types";
@@ -11,10 +9,14 @@ import { FaClipboardList } from "react-icons/fa";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { AnimatePresence, motion } from "framer-motion";
 import { deleteWaiver } from "../actions/waiver";
+import Pagination from "@/components/Pagination";
+import { Filters } from "./components/Filters";
 
 type Props = {
   waivers: Waiver[];
 };
+
+const ITEMS_PER_PAGE = 1;
 
 export default function Dashboard({ waivers }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,12 +24,27 @@ export default function Dashboard({ waivers }: Props) {
   const [waiverList, setWaiverList] = useState(waivers);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   const filteredWaivers = useFilteredWaivers(
     waiverList,
     searchQuery,
     dateFilter
   );
+
+  useEffect(() => {
+    if (waivers.length > 0) {
+      setIsLoading(false);
+    }
+  }, [waivers]);
+
+  const totalPages = Math.ceil(waivers.length / ITEMS_PER_PAGE);
+
+  const currentWaivers = useMemo(() => {
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    return waivers.slice(start, start + ITEMS_PER_PAGE);
+  }, [page, waivers]);
 
   const handleDelete = async (id: string) => {
     const previousList = [...waiverList];
@@ -39,7 +56,7 @@ export default function Dashboard({ waivers }: Props) {
       if (!res?.success) {
         throw new Error("Delete failed");
       }
-  
+
       // ✅ Optimistic UI (only if delete didn't throw)
       setWaiverList((prev) => prev.filter((w) => w.id !== id));
       setShowSuccess(true);
@@ -62,25 +79,12 @@ export default function Dashboard({ waivers }: Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <div className='flex flex-1 gap-2'>
-          <input
-            type='text'
-            placeholder='Search by name or ID'
-            className='w-full border rounded px-3 py-2 text-sm'
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-
-          <select
-            className='border rounded px-3 py-2 text-sm'
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-          >
-            <option value='all'>All Time</option>
-            <option value='7days'>Last 7 Days</option>
-            <option value='month'>This Month</option>
-          </select>
-        </div>
+        <Filters
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          dateFilter={dateFilter}
+          setDateFilter={setDateFilter}
+        />
 
         <WeeklyCount waivers={waivers} />
       </motion.div>
@@ -145,12 +149,23 @@ export default function Dashboard({ waivers }: Props) {
                 </p>
               </div>
             ) : (
-              <WaiverTable
-                waivers={filteredWaivers}
-                searchQuery={searchQuery}
-                dateFilter={dateFilter}
-                onDelete={handleDelete}
-              />
+              <>
+                <WaiverTable
+                  waivers={currentWaivers}
+                  onDelete={handleDelete}
+                  isLoading={isLoading}
+                />
+
+                {totalPages > 1 && (
+                  <div className='mt-4 flex justify-center'>
+                    <Pagination
+                      page={page}
+                      totalPages={totalPages}
+                      onPageChange={setPage}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </>
         </CSSTransition>
