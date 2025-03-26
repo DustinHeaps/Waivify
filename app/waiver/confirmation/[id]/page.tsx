@@ -1,4 +1,4 @@
-import { getSignatureById } from "@/app/actions/waiver";
+import { getSignatureById } from "@/app/actions/signature";
 import { ReturnHomeButton } from "@/components/ReturnHomeButton";
 import { SendEmailButton } from "@/components/SendEmailButton";
 import WaiverDownloadButton from "@/components/WaiverDownloadButton";

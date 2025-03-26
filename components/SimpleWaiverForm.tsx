@@ -5,9 +5,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
-import { saveWaiver, uploadSignature } from "@/app/actions/waiver";
+import { saveWaiver } from "@/app/actions/waiver";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import { uploadSignature } from '@/app/actions/signature';
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),

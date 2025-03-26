@@ -90,17 +90,19 @@ export default function LandingPage() {
           Perfect for:
         </h2>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-300 text-left'>
-          <ul className='space-y-2 list-disc list-inside'>
-            <li>Tattoo Shops</li>
-            <li>Pet Groomers</li>
-            <li>Small Clinics</li>
-          </ul>
-          <ul className='space-y-2 list-disc list-inside'>
-            <li>Yoga & Fitness Studios</li>
-            <li>Tour Guides & Rentals</li>
-            <li>Personal Care Pros</li>
-          </ul>
+        <div className='flex justify-center'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-300 text-left'>
+            <ul className='space-y-2 list-disc list-inside'>
+              <li>Tattoo Shops</li>
+              <li>Pet Groomers</li>
+              <li>Small Clinics</li>
+            </ul>
+            <ul className='space-y-2 list-disc list-inside'>
+              <li>Yoga & Fitness Studios</li>
+              <li>Tour Guides & Rentals</li>
+              <li>Personal Care Pros</li>
+            </ul>
+          </div>
         </div>
       </motion.section>
 

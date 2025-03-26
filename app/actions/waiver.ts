@@ -1,8 +1,6 @@
 "use server";
 
-import { utapi } from "../api/uploadthing/core";
-
-import { Prisma, PrismaClient } from "@prisma/client";
+import { prisma } from '@/lib/prisma';
 
 import { Resend } from "resend";
 
@@ -15,51 +13,15 @@ import { format } from "date-fns";
 
 import { z } from "zod";
 import { trackEvent } from "@/lib/posthog/posthog.server";
-import { DocumentProps, renderToBuffer } from "@react-pdf/renderer";
+import { renderToBuffer } from "@react-pdf/renderer";
 import WaiverPDF from "@/components/WaiverPDF";
 import { createElement } from "react";
 import { revalidatePath } from "next/cache";
+import { getSignatureById } from './signature';
 
-const prisma = new PrismaClient();
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function uploadSignature(formData: FormData, waiverId: string) {
-  const files = formData.getAll("file") as File[];
-
-  if (!files || files.length === 0) {
-    throw new Error("No file found in formData");
-  }
-
-  const name = formData.get("name") as string;
-  const date = `${formData.get("date")}T00:00:00Z`;
-
-  // Upload to UploadThing
-  const uploaded = await utapi.uploadFiles(files);
-
-  const file = uploaded[0]?.data;
-
-  if (!file || !file.url) {
-    throw new Error("Upload failed or missing file URL");
-  }
-
-  const saved = await prisma.signature.create({
-    data: {
-      name,
-      date,
-      fileKey: file.key,
-      waiver: {
-        connect: { id: waiverId },
-      },
-    },
-  });
-
-  await trackEvent({
-    event: "signature_saved",
-    distinctId: file.key,
-  });
-  revalidatePath("/admin");
-  return saved;
-}
 
 export async function getAllWaivers() {
   try {
@@ -77,31 +39,7 @@ export async function getAllWaivers() {
   }
 }
 
-export async function getSecureFileUrl(fileKey: string) {
-  if (!fileKey) throw new Error("File key is missing");
 
-  const fileUrl = `https://utfs.io/f/${fileKey}`;
-
-  await trackEvent({
-    event: "filekey_retrieved",
-    distinctId: fileKey,
-  });
-
-  return fileUrl;
-}
-
-export async function getSignatureById(id: string) {
-  const signature = await prisma.signature.findUnique({
-    where: { id },
-  });
-
-  await trackEvent({
-    event: "signature_retrieved",
-    distinctId: id,
-  });
-
-  return signature;
-}
 
 export async function sendEmail(id: string, waiverId: string) {
   const { userId } = auth();

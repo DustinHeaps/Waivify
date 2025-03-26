@@ -11,12 +11,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { deleteWaiver } from "../actions/waiver";
 import Pagination from "@/components/Pagination";
 import { Filters } from "./components/Filters";
+import { downloadCSV } from "@/lib/utils";
 
 type Props = {
   waivers: Waiver[];
 };
 
-const ITEMS_PER_PAGE = 1;
+const ITEMS_PER_PAGE = 5;
 
 export default function Dashboard({ waivers }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -85,8 +86,15 @@ export default function Dashboard({ waivers }: Props) {
           dateFilter={dateFilter}
           setDateFilter={setDateFilter}
         />
-
-        <WeeklyCount waivers={waivers} />
+        <div className='flex justify-end mb-2'>
+          <button
+            onClick={() => downloadCSV(waiverList)}
+            className='text-sm text-blue-600 hover:underline self-start sm:self-auto'
+          >
+            Export all as CSV
+          </button>
+        </div>
+        {/* <WeeklyCount waivers={waivers} /> */}
       </motion.div>
 
       <AnimatePresence>
