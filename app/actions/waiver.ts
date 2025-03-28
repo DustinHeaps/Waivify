@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 import { Resend } from "resend";
 
@@ -17,11 +17,9 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import WaiverPDF from "@/components/WaiverPDF";
 import { createElement } from "react";
 import { revalidatePath } from "next/cache";
-import { getSignatureById } from './signature';
-
+import { getSignatureById } from "./signature";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
 
 export async function getAllWaivers() {
   try {
@@ -30,6 +28,7 @@ export async function getAllWaivers() {
       include: {
         signature: true,
       },
+      where: { archived: false },
     });
 
     return waivers;
@@ -38,8 +37,6 @@ export async function getAllWaivers() {
     throw new Error("Could not fetch waivers");
   }
 }
-
-
 
 export async function sendEmail(id: string, waiverId: string) {
   const { userId } = auth();
@@ -218,6 +215,13 @@ export async function log404(path: string) {
     properties: {
       path,
     },
+  });
+}
+
+export async function archiveWaivers(ids: string[]) {
+  await prisma.waiver.updateMany({
+    where: { id: { in: ids } },
+    data: { archived: true },
   });
 }
 

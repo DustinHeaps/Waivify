@@ -7,29 +7,31 @@ import PostHogWrapper from "@/lib/posthog/posthogWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Waivify | Easy Digital Waivers & Consent Forms",
+  title: "Waivify – Digital Waivers Made Simple",
   description:
-    "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
+    "Ditch the paper. Waivify lets you create, share, and store legally binding digital waivers in econds — perfect for tattoo shops, pet groomers, yoga studios, and small businesses that need simple, secure signatures.",
   keywords: [
     "digital waivers",
     "consent forms",
     "digital signatures",
     "electronic forms",
     "mobile waivers",
-    "online waiver service",
-    "paperless forms",
     "waiver app",
     "e-signatures",
+    "digital release forms",
+    "online waiver platform",
+    "e-sign waiver",
+    "waiver software for small business",
   ],
   openGraph: {
-    title: "Waivify | Easy Digital Waivers & Consent Forms",
+    title: "Waivify – Digital Waivers Made Simple",
     description:
-      "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
+      "Ditch the paper. Waivify lets you create, share, and store legally binding digital waivers in econds — perfect for tattoo shops, pet groomers, yoga studios, and small businesses that need simple, secure signatures.",
     url: "https://www.waivify.com",
     siteName: "Waivify",
     images: [
       {
-        url: "https://www.waivify.com/your-image.png",
+        url: "https://www.waivify.com/OG-Rectangle.png",
         width: 1200,
         height: 630,
       },
@@ -38,13 +40,38 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Waivify | Easy Digital Waivers & Consent Forms",
+    title: "Waivify – Digital Waivers Made Simple",
     description:
-      "Waivify helps your business ditch paperwork. Create, share, and collect legally binding digital signatures and waivers in seconds—perfect for tattoo shops, yoga studios, clinics, and more.",
-    images: ["/logo.png"],
+      "Ditch the paper. Waivify lets you create, share, and store legally binding digital waivers in econds — perfect for tattoo shops, pet groomers, yoga studios, and small businesses that need simple, secure signatures.",
+    images: ["https://www.waivify.com/OG-Rectangle.png"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "android-chrome",
+        url: "/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "android-chrome",
+        url: "/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+      {
+        rel: "manifest",
+        url: "/site.webmanifest",
+      },
+    ],
   },
 };
 

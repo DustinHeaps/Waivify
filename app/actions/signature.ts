@@ -1,10 +1,9 @@
 "use server";
 
-
-import { trackEvent } from '@/lib/posthog/posthog.server';
-import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
-import { utapi } from '../api/uploadthing/core';
+import { trackEvent } from "@/lib/posthog/posthog.server";
+import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+import { utapi } from "../api/uploadthing/core";
 
 export async function uploadSignature(formData: FormData, waiverId: string) {
   const files = formData.getAll("file") as File[];

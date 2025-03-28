@@ -1,12 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { TallyScript } from "@/components/TallyScript";
+import { JoinWaitlistButton } from "@/components/JoinWaitlistButton";
+import ClerkButtons from "@/components/ClerkButtons";
+import Link from "next/link";
+
+// export const metadata = {
+//   title: "Waivify – The Simple Way to Collect Digital Waivers",
+//   description:
+//     "Waivify lets businesses collect, sign, and manage waivers online. No paper, no clutter. Just simple, secure waivers.",
+// };
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,32 +22,10 @@ const fadeInUp = {
 };
 
 export default function LandingPage() {
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const script = document.createElement("script");
-      script.src = "https://tally.so/widgets/embed.js";
-      script.async = true;
-      script.onload = () => {
-        console.log("Tally script loaded");
-      };
-      document.body.appendChild(script);
-    }
-  }, []);
-
   return (
     <div className='min-h-screen bg-gray-900 text-white p-6'>
-      <div className='absolute top-6 right-6 z-50'>
-        <SignedOut>
-          <SignInButton mode='modal'>
-            <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
-              Get Started
-            </button>
-          </SignInButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </div>
+      <TallyScript />
+      <ClerkButtons />
 
       <motion.div
         className='flex justify-center pt-10'
@@ -48,7 +34,7 @@ export default function LandingPage() {
         viewport={{ once: true }}
         variants={fadeInUp}
       >
-        <Image src={Logo} alt='Waivify Logo' width={200} height={200} />
+        {/* <Image src={Logo} alt='Waivify Logo' width={200} height={200} /> */}
       </motion.div>
 
       <motion.section
@@ -65,18 +51,7 @@ export default function LandingPage() {
           A simple, mobile-friendly way for businesses to collect digital
           signatures — anywhere, anytime.
         </p>
-        <Button
-          data-tally-open={process.env.NEXT_PUBLIC_TALLY_ID}
-          data-tally-layout='modal'
-          data-tally-width='500'
-          data-tally-overlay='1'
-          data-tally-emoji-text='👋'
-          data-tally-emoji-animation='wave'
-          size='lg'
-          className='bg-teal-500 transform transition duration-200 ease-in-out hover:bg-teal-400 hover:scale-105 hover:shadow-xl'
-        >
-          Join the Waitlist
-        </Button>
+        <JoinWaitlistButton />
       </motion.section>
 
       <motion.section
@@ -159,7 +134,7 @@ export default function LandingPage() {
           Why You’ll Love It
         </h2>
         <ul className='list-disc list-inside space-y-2 text-gray-300'>
-          <li>No paper or PDFs</li>
+          <li>No paperwork, No printing</li>
           <li>Works on any device</li>
           <li>Legally binding signatures</li>
           <li>All waivers in one place</li>
@@ -181,22 +156,24 @@ export default function LandingPage() {
           Join the waitlist — it's free, and we’ll notify you as soon as we’re
           live.
         </p>
-        <Button
-          data-tally-open={process.env.NEXT_PUBLIC_TALLY_ID}
-          data-tally-layout='modal'
-          data-tally-width='500'
-          data-tally-overlay='1'
-          data-tally-emoji-text='👋'
-          data-tally-emoji-animation='wave'
-          size='lg'
-          className='bg-teal-500 transform transition duration-200 ease-in-out hover:bg-teal-400 hover:scale-105 hover:shadow-xl'
-        >
-          Join the Waitlist
-        </Button>
+        <JoinWaitlistButton />
       </motion.section>
 
-      <footer className='text-center text-sm py-6 text-gray-400'>
-        Made with ❤️ for service businesses · Privacy Policy · Contact Us
+      <footer className='text-sm text-gray-400 text-center mt-10'>
+        <p>
+          © {new Date().getFullYear()} Waivify ·{" "}
+          <Link href='/policy' className='underline hover:text-white'>
+            Digital Signature Policy
+          </Link>{" "}
+          ·{" "}
+          <Link href='/terms' className='underline hover:text-gray-700'>
+            Terms of Service
+          </Link>{" "}
+          ·{" "}
+          <Link href='/privacy' className='underline hover:text-gray-700'>
+            Privacy Policy
+          </Link>{" "}
+        </p>
       </footer>
     </div>
   );

@@ -73,7 +73,14 @@ export default function Dashboard({ waivers }: Props) {
 
   return (
     <div className='max-w-5xl mx-auto mt-10'>
-      <h1 className='text-2xl font-bold mb-4'>Signed Waivers</h1>
+      <div className='mb-6'>
+        <h1 className='text-2xl font-semibold text-gray-900'>
+          Your Waivify Submissions
+        </h1>
+        <p className='text-sm text-gray-500 mt-1'>
+          Collect. Confirm. Keep it simple.
+        </p>
+      </div>
       <motion.div
         className='flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8'
         initial={{ opacity: 0, y: 10 }}

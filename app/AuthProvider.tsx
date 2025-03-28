@@ -11,8 +11,8 @@ export default function AuthProvider({
     <ClerkProvider
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
-      afterSignInUrl='/dashboard'
-      afterSignUpUrl='/dashboard'
+      afterSignInUrl='/home'
+      afterSignUpUrl='/onboarding'
     >
       {children}
     </ClerkProvider>

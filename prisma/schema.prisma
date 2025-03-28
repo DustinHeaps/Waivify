@@ -27,7 +27,7 @@ model Waiver {
   terms     Boolean
   liability Boolean
   viewedAt  DateTime?
+  archived  Boolean   @default(false)
 
-  signature Signature? @relation(name: "WaiverSignature") 
-
+  signature Signature? @relation(name: "WaiverSignature")
 }

@@ -6,6 +6,19 @@ import WaiverDownloadButton from "@/components/WaiverDownloadButton";
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
 
+export const metadata = {
+  title: "Waiver Signed – Confirmation | Waivify",
+  description:
+    "Your waiver was submitted successfully. Waivify keeps your digital documents safe and accessible.",
+  keywords: [
+    "waiver confirmation",
+    "signature complete",
+    "form submitted",
+    "thank you waiver",
+    "Waivify confirmation",
+  ],
+};
+
 export default async function ConfirmationPage({
   params,
 }: {
@@ -23,8 +36,16 @@ export default async function ConfirmationPage({
         <h1 className='text-2xl font-bold text-green-600'>
           ✅ Waiver Submitted
         </h1>
-        <p className='mt-2'>
-          Thanks for signing! Your waiver has been successfully submitted.
+        <p className='text-sm text-gray-500 mt-4 text-center'>
+          Your waiver has been securely submitted. All waivers are legally
+          binding under our{" "}
+          <a
+            href='/policy'
+            className='underline hover:text-teal-400'
+          >
+            Digital Signature Policy
+          </a>
+          .
         </p>
 
         <p className='text-center text-sm text-gray-600 mt-4'>

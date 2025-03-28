@@ -107,3 +107,28 @@
   opacity: 0;
   transition: opacity 200ms ease;
 }
+
+@media print {
+  @page {
+    margin-bottom: 0;
+  }
+  
+  a::after {
+    content: "";
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}
