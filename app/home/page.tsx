@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const metadata = {
-  title: "Waivify Home – Welcome Back",
-  description:
-    "You're signed in and ready to manage digital waivers. Head to your dashboard or start fresh.",
-};
+
 
 export default function HomePage() {
   return (
