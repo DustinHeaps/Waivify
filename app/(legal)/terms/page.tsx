@@ -1,6 +1,22 @@
 export const metadata = {
   title: "Terms of Service | Waivify",
   description: "Review Waivify's terms outlining your rights and responsibilities as a user of our platform.",
+  openGraph: {
+    title: "Terms of Service | Waivify",
+    description: "Review Waivify's terms outlining your rights and responsibilities as a user of our platform.",
+    url: "https://waivify.com/terms",
+    siteName: "Waivify",
+    images: [
+      {
+        url: "https://waivify.com/LegalOG.png", 
+        width: 1200,
+        height: 630,
+        alt: "Terms of Service | Waivify",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 

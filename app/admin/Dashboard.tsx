@@ -8,7 +8,7 @@ import WeeklyCount from "./components/WeeklyCount";
 import { FaClipboardList } from "react-icons/fa";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { AnimatePresence, motion } from "framer-motion";
-import { deleteWaiver } from "../actions/waiver";
+import { deleteWaivers } from "../actions/waiver";
 import Pagination from "@/components/Pagination";
 import { Filters } from "./components/Filters";
 import { downloadCSV } from "@/lib/utils";
@@ -52,7 +52,7 @@ export default function Dashboard({ waivers }: Props) {
 
     try {
       // Server-side deletion first
-      const res = await deleteWaiver(id);
+      const res = await deleteWaivers([id]);
 
       if (!res?.success) {
         throw new Error("Delete failed");

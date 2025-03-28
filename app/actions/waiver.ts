@@ -225,16 +225,17 @@ export async function archiveWaivers(ids: string[]) {
   });
 }
 
-export async function deleteWaiver(id: string) {
+export async function deleteWaivers(ids: string[]) {
   try {
-    await prisma.waiver.delete({
-      where: { id },
+    await prisma.waiver.deleteMany({
+      where: { id: { in: ids } },
     });
 
     revalidatePath("/dashboard");
+
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete waiver:", error);
+    console.error("Failed to delete waivers:", error);
     return { success: false };
   }
 }

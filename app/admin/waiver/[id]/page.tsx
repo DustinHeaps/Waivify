@@ -7,8 +7,8 @@ interface WaiverDetailProps {
 export default async function WaiverDetail({ params }: WaiverDetailProps) {
   const waiverId = params.id;
 
-  // Simulate fetching data (replace with real db call)
-  const waiver = await getWaiverByToken(waiverId); // your db call
+ 
+  const waiver = await getWaiverByToken(waiverId); 
 
   if (!waiver) return notFound();
 

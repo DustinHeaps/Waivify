@@ -1,8 +1,23 @@
 export const metadata = {
   title: "Digital Signature Policy | Waivify",
-  description: "Understand how Waivify manages and secures digital signatures for documents and waivers.",
+  description:
+    "Understand how Waivify manages and secures digital signatures for documents and waivers.",
+  openGraph: {
+    title: "Digital Signature Policy | Waivify",
+    description:
+      "Review Waivify's digital signature policy, ensuring legal compliance, data security, and trusted document handling.",
+    images: [
+      {
+        url: "https://www.waivify.com/OGLegal.png",
+        width: 1200,
+        height: 630,
+        alt: "Waivify Digital Signature Policy",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
-
 
 export default function DigitalSignaturePolicyPage() {
   return (

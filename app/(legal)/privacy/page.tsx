@@ -1,9 +1,25 @@
-
 export const metadata = {
   title: "Privacy Policy | Waivify",
-  description: "Learn how Waivify collects, uses, and protects your personal data when using our platform.",
+  description:
+    "Learn how Waivify collects, uses, and protects your personal data when using our platform.",
+  openGraph: {
+    title: "Privacy Policy | Waivify",
+    description:
+      "Learn how Waivify collects, uses, and protects your personal data when using our platform.",
+    url: "https://waivify.com/privacy",
+    siteName: "Waivify",
+    images: [
+      {
+        url: "https://waivify.com/LegalOG.png",
+        width: 1200,
+        height: 630,
+        alt: "Privacy Policy | Waivify",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
-
 
 export default function PrivacyPage() {
   return (

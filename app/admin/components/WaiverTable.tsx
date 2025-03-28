@@ -7,7 +7,7 @@ import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
 import { useEffect, useState } from "react";
 import { WaiverSkeleton } from "./WaiverSkeleton";
 import { useDebounced } from "@/hooks/useDebounced";
-import { archiveWaivers } from '@/app/actions/waiver';
+import { archiveWaivers } from "@/app/actions/waiver";
 
 type Props = {
   waivers: Waiver[];
@@ -38,7 +38,7 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
 
   const handleArchive = async () => {
     await archiveWaivers(selectedIds);
-    // Refresh waivers list or optimistically update state
+
   };
 
   return (
@@ -56,7 +56,12 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
             >
               Delete Selected
             </button>
-            <button onClick={() => handleArchive()} className='text-gray-600 hover:underline'>Archive</button>
+            <button
+              onClick={() => handleArchive()}
+              className='text-gray-600 hover:underline'
+            >
+              Archive
+            </button>
           </div>
         </div>
       )}
@@ -75,7 +80,7 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
               <th className='px-4 py-3'>Name</th>
               <th className='px-4 py-3'>Date</th>
               <th className='px-4 py-3'>Waiver ID</th>
-              {/* <th className='px-4 py-3'>Actions</th> */}
+              <th className='px-4 py-3'>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -110,16 +115,8 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
                       </span>
                       <CopyButton text={waiver.id} />
                     </td>
-                    {/* <td className='px-4 py-3 space-x-4 text-sm whitespace-nowrap'>
-                      <ConfirmDeleteDialog
-                        onConfirm={() => onDelete(waiver.id)}
-                        waiverId={waiver.id}
-                      >
-                        <button className='text-red-600 hover:underline p-0 h-auto'>
-                          Delete
-                        </button>
-                      </ConfirmDeleteDialog>
 
+                    <td className='px-4 py-3 space-x-4 text-sm whitespace-nowrap'>
                       <a
                         href={`/waiver/${waiver.token}`}
                         target='_blank'
@@ -127,13 +124,7 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
                       >
                         View
                       </a>
-                      <a
-                        href={`/api/download?waiverId=${waiver.id}`}
-                        className='text-blue-600 hover:underline'
-                      >
-                        Download
-                      </a>
-                    </td> */}
+                    </td>
                   </motion.tr>
                 ))}
           </tbody>
