@@ -1,3 +1,5 @@
+import { updateNextStep } from '@/app/actions/onboarding';
+import { useNextSteps } from '@/hooks/useNextSteps';
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -26,3 +28,19 @@ export function downloadCSV(data: any[], filename = "Waivers.csv") {
   link.setAttribute("download", filename);
   link.click();
 }
+
+/**
+ * Mark step completed by ID if not already done
+ */
+
+export const markStepIfEligible = async (id: string) => {
+  const nextSteps = useNextSteps(); // returns Step[] directly
+  const alreadyCompleted = nextSteps.find((s) => s.id === id)?.completed;
+
+  if (!alreadyCompleted) {
+    await updateNextStep(id, true);
+  }
+};
+
+
+

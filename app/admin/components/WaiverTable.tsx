@@ -3,11 +3,10 @@
 import CopyButton from "./CopyButton";
 import { Waiver } from "@/types";
 import { motion } from "framer-motion";
-import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
 import { useEffect, useState } from "react";
-import { WaiverSkeleton } from "./WaiverSkeleton";
 import { useDebounced } from "@/hooks/useDebounced";
 import { archiveWaivers } from "@/app/actions/waiver";
+import { SkeletonTableRow } from "@/components/SkeletonTableRpw";
 
 type Props = {
   waivers: Waiver[];
@@ -38,7 +37,6 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
 
   const handleArchive = async () => {
     await archiveWaivers(selectedIds);
-
   };
 
   return (
@@ -67,25 +65,27 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
       )}
 
       <div className='overflow-x-auto'>
-        <table className='w-full table-auto min-w-[640px]'>
+        <table className='w-full table-fixed min-w-[640px]'>
           <thead className='bg-gray-100 text-left text-sm text-gray-600'>
             <tr>
-              <th className='px-4 py-3'>
+              <th className='px-4 py-3 w-16'>
                 <input
                   type='checkbox'
                   checked={allSelected}
                   onChange={toggleSelectAll}
                 />
               </th>
-              <th className='px-4 py-3'>Name</th>
-              <th className='px-4 py-3'>Date</th>
-              <th className='px-4 py-3'>Waiver ID</th>
-              <th className='px-4 py-3'>Actions</th>
+              <th className='px-4 py-3 min-w-[120px]'>Name</th>
+              <th className='px-4 py-3 w-48'>Date</th>
+              <th className='px-4 py-3 min-w-[140px]'>Waiver ID</th>
+              <th className='px-4 py-3 w-24'>Actions</th>
             </tr>
           </thead>
           <tbody>
             {debouncedLoading
-              ? Array.from({ length: 5 }).map((_, idx) => <WaiverSkeleton />)
+              ? Array.from({ length: waivers.length }).map((_, idx) => (
+                  <SkeletonTableRow key={idx} columns={5} />
+                ))
               : waivers.map((waiver) => (
                   <motion.tr
                     layout
@@ -103,20 +103,20 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
                         onChange={() => toggleSelect(waiver.id)}
                       />
                     </td>
-                    <td className='px-4 py-3 text-sm whitespace-nowrap'>
+                    <td className='px-4 py-3 text-sm whitespace-nowrap '>
                       {waiver.name}
                     </td>
                     <td className='px-4 py-3 text-sm whitespace-nowrap'>
                       {new Date(waiver.date).toLocaleString()}
                     </td>
-                    <td className='px-4 py-3 text-sm text-gray-500 whitespace-nowrap'>
+                    <td className='px-4 py-3 text-sm text-gray-500 whitespace-nowrap '>
                       <span title={waiver.id}>
                         {waiver.id.slice(0, 4)}...{waiver.id.slice(-4)}
                       </span>
                       <CopyButton text={waiver.id} />
                     </td>
 
-                    <td className='px-4 py-3 space-x-4 text-sm whitespace-nowrap'>
+                    <td className='px-4 py-3 space-x-4 text-sm whitespace-nowrap '>
                       <a
                         href={`/waiver/${waiver.token}`}
                         target='_blank'

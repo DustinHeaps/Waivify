@@ -3,6 +3,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import AuthProvider from "./AuthProvider";
 import PostHogWrapper from "@/lib/posthog/posthogWrapper";
+import ClerkButtons from "@/components/landing/ClerkButtons";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -85,6 +86,7 @@ export default function RootLayout({
       <PostHogWrapper>
         <html lang='en'>
           <body className={inter.className}>
+            <ClerkButtons />
             {children}
             <Analytics />
           </body>

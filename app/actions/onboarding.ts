@@ -2,7 +2,7 @@
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { utapi } from "../api/uploadthing/core";
-
+import { trackEvent } from "@/lib/posthog/posthog.server";
 
 export async function completeOnboarding(data: any) {
   const { userId } = auth();
@@ -15,6 +15,12 @@ export async function completeOnboarding(data: any) {
       ...data,
     },
   });
+
+  await trackEvent({
+    event: "onboarding_complete",
+    distinctId: "server",
+  });
+
   return { success: true };
 }
 
@@ -39,22 +45,23 @@ export async function uploadLogo(formData: FormData) {
   return { url: file.url };
 }
 
-// export async function createWaiver(formData: FormData) {
-//   const { userId } = auth();
-//   if (!userId) throw new Error("Not authenticated");
+export async function updateNextStep(stepId: string, completed: boolean) {
+  const { userId } = auth();
+  if (!userId) throw new Error("Not authenticated");
 
-//   const title = formData.get("title") as string;
-//   const description = formData.get("description") as string;
+  const user = await clerkClient.users.getUser(userId);
+  const existing = (user.publicMetadata.nextSteps || {}) as Record<
+    string,
+    boolean
+  >;
 
-//   if (!title) throw new Error("Title is required");
-
-//   const waiver = await prisma.waiver.create({
-//     data: {
-//       title,
-//       description,
-//       createdBy: userId,
-//     },
-//   });
-
-//   return { success: true, waiver };
-// }
+  await clerkClient.users.updateUser(userId, {
+    publicMetadata: {
+      ...user.publicMetadata,
+      nextSteps: {
+        ...existing,
+        [stepId]: completed,
+      },
+    },
+  });
+}

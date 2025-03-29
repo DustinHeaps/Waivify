@@ -33,7 +33,7 @@ export function UploadLogo({ onBack, onNext }: Props) {
     <form onSubmit={handleSubmit} className='space-y-6 text-center'>
       <p className='text-gray-500 max-w-md mx-auto'>
         Your logo will appear on all your waivers to keep things professional
-        <span className='text-sm italic ml-1'>(Optional)</span>
+        <span className='text-sm italic ml-1'></span>
       </p>
 
       {logoUrl && (

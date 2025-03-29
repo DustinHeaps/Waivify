@@ -4,7 +4,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { TallyScript } from "@/components/TallyScript";
 import { JoinWaitlistButton } from "@/components/landing/JoinWaitlistButton";
-import ClerkButtons from "@/components/landing/ClerkButtons";
 import Logo from "@/public/logo.png";
 import { Card, CardContent } from "../ui/card";
 import Link from "next/link";
@@ -18,7 +17,6 @@ export default function LandingContent() {
   return (
     <div className='min-h-screen bg-gray-900 text-white p-6'>
       <TallyScript />
-      <ClerkButtons />
 
       <motion.div
         className='flex justify-center pt-10'

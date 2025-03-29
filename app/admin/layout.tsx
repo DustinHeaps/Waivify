@@ -1,5 +1,3 @@
-import { UserButton, SignedIn } from "@clerk/nextjs";
-
 export default function AdminLayout({
   children,
 }: {
@@ -12,9 +10,6 @@ export default function AdminLayout({
           <img src='/logo.png' alt='Waivify Logo' className='w-6 h-6' />
           <span>Waivify</span>
         </div>
-        <SignedIn>
-          <UserButton afterSignOutUrl='/' />
-        </SignedIn>
       </header>
       <main>{children}</main>
     </div>
