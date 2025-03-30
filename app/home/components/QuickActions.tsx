@@ -1,38 +1,37 @@
-import { Card, CardContent } from '@/components/ui/card';
-import Link from 'next/link';
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 import React from "react";
 
 export const QuickActions = () => {
   return (
-    <div className='space-y-4'>
-      <Card className='hover:scale-[1.01]  border border-gray-200'>
-        <CardContent className='p-4 space-y-1'>
-          <h2 className='text-xs font-semibold uppercase tracking-wide mb-2'>
-            Quick Actions
-          </h2>
-          <div className='flex flex-col space-y-1 text-sm'>
-            <Link
-              href='/exports'
-              className='px-3 py-2 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 rounded text-sm text-center transition hover:scale-[1.02]'
-            >
-              View Exports
-            </Link>
-            <Link
-              href='/settings'
-              className='px-3 py-2 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 rounded text-sm text-center transition hover:scale-[1.02]'
-            >
-              Account Settings
-            </Link>
-            <Link
-              href='/billing'
-              className='px-3 py-2 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 rounded text-sm text-center transition hover:scale-[1.02]'
-            >
-              Billing & Plan
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+    <div className='rounded-lg border bg-white p-5 space-y-3'>
+      <h2 className='text-sm font-medium text-muted-foreground'>
+        Quick Actions
+      </h2>
+      <div className='space-y-2'>
+        <a
+          href='/exports'
+          className='flex items-center justify-between rounded border px-3 py-1 text-sm hover:bg-gray-50 transition'
+        >
+          <span>View Exports</span>
+          <span className='text-muted-foreground'>→</span>
+        </a>
+        <a
+          href='/account'
+          className='flex items-center justify-between rounded border px-3 py-1 text-sm hover:bg-gray-50 transition'
+        >
+          <span>Account Settings</span>
+          <span className='text-muted-foreground'>→</span>
+        </a>
+        <a
+          href='/billing'
+          className='flex items-center justify-between rounded border px-3 py-1 text-sm hover:bg-gray-50 transition'
+        >
+          <span>Billing & Plan</span>
+          <span className='text-muted-foreground'>→</span>
+        </a>
+      </div>
     </div>
   );
 };

@@ -14,15 +14,13 @@ export const Stats = () => {
   });
 
   return (
-    <Card className='hover:scale-[1.01] transition'>
-      <CardContent className='p-5 space-y-2'>
-        <h2 className='text-base font-semibold text-gray-900'>Your Stats</h2>
-        <ul className='space-y-1 text-sm text-muted-foreground'>
-          <li>📄 Total Waivers Created: {signatures}</li>
-          <li>✍️ Signatures Collected: {signatures}</li>
-          <li>⏱️ Last Signed: 2 days ago</li>
-        </ul>
-      </CardContent>
-    </Card>
+    <div className='rounded-lg border bg-white p-5 space-y-3'>
+      <h2 className='text-sm font-medium text-muted-foreground'>Your Stats</h2>
+      <ul className='text-sm space-y-1'>
+        <li>📄 Total Waivers Created: 10</li>
+        <li>✍️ Signatures Collected: 10</li>
+        <li>⏰ Last Signed: 2 days ago</li>
+      </ul>
+    </div>
   );
 };

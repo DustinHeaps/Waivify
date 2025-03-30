@@ -4,20 +4,20 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   publicRoutes: ["/", "/waiver", "/home", "/onboarding", "/api/uploadthing"],
   async afterAuth(auth, req, evt) {
-    const userId = auth.userId;
+    // const userId = auth.userId;
 
-    if (!userId) return;
+    // if (!userId) return;
 
-    const user = await clerkClient.users.getUser(userId);
-    const metadata = user.publicMetadata;
+    // const user = await clerkClient.users.getUser(userId);
+    // const metadata = user.publicMetadata;
 
-    if (
-      req.nextUrl.pathname !== "/onboarding" &&
-      !metadata?.onboardingComplete
-    ) {
-      const onboardingUrl = new URL("/onboarding", req.url);
-      return NextResponse.redirect(onboardingUrl);
-    }
+    // if (
+    //   req.nextUrl.pathname !== "/onboarding" &&
+    //   !metadata?.onboardingComplete
+    // ) {
+    //   const onboardingUrl = new URL("/onboarding", req.url);
+    //   return NextResponse.redirect(onboardingUrl);
+    // }
 
     // if (req.nextUrl.pathname.startsWith("/admin")) {
     //   const role = auth.user?.publicMetadata?.role;

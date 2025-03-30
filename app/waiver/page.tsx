@@ -1,5 +1,8 @@
 import SimpleWaiverForm from "@/components/SimpleWaiverForm";
 import { markWaiverViewed } from "../actions/waiver";
+import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import WaiverLimitGuard from '@/components/WaiverLimitGuard';
 
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",
@@ -15,10 +18,21 @@ export const metadata = {
 };
 
 export default async function WaiverPage() {
+  const user = await currentUser();
+
   await markWaiverViewed();
+
+  const waiversUsed = Number(user?.publicMetadata?.waiversUsed) || 0;
+  const plan = user?.publicMetadata?.plan || "free";
+
+  if (plan === "free" && waiversUsed >= 10) {
+    // redirect("/upgrade");
+  }
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
-      <SimpleWaiverForm />
+      <WaiverLimitGuard>
+        <SimpleWaiverForm />
+      </WaiverLimitGuard>
     </div>
   );
 }

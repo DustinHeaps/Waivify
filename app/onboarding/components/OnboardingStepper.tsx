@@ -118,6 +118,7 @@ export default function OnboardingStepper() {
             description={(formData as any).waiverDescription}
             onNext={() => handleNext({})}
             onBack={handleBack}
+            isSubmitting={isSubmitting}
           />
         );
       default:

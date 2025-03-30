@@ -11,7 +11,7 @@ export function GetMoreDone() {
   const [hasCreatedFirstWaiver, setHasCreatedFirstWaiver] = useState(false);
   const [hasDownloadedWaiver, setHasDownloadedWaiver] = useState(false);
   const [hasViewedDashboard, setHasViewedDashboard] = useState(false);
-  const [isOnboarded, setIsOnboarded] = useState(false);
+  const [isOnboarded, setIsOnboarded] = useState(true);
 
   const { user } = useUser();
   const fireConfetti = useConfetti();
@@ -51,7 +51,7 @@ export function GetMoreDone() {
             exit={{ opacity: 0, y: -20 }}
           >
             <Card className='hover:scale-[1.01] transition'>
-              <CardContent className='p-5 space-y-2'>
+              <CardContent className='p-9 space-y-2'>
                 <h2 className='text-base font-semibold text-gray-900 flex items-center justify-between'>
                   Getting Started <ProgressBadge status='in_progress' />
                 </h2>
@@ -68,12 +68,7 @@ export function GetMoreDone() {
                     {hasViewedDashboard ? "✅" : "⬜"} View your dashboard
                   </li>
                 </ul>
-                <button
-                  onClick={() => setIsOnboarded(true)}
-                  className='text-teal-500 hover:underline text-sm'
-                >
-                  Finish onboarding →
-                </button>
+             
               </CardContent>
             </Card>
           </motion.div>

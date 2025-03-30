@@ -1,7 +1,8 @@
-import { updateNextStep } from '@/app/actions/onboarding';
-import { useNextSteps } from '@/hooks/useNextSteps';
+import { updateNextStep } from "@/app/actions/onboarding";
+import { useNextSteps } from "@/hooks/useNextSteps";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,13 +35,10 @@ export function downloadCSV(data: any[], filename = "Waivers.csv") {
  */
 
 export const markStepIfEligible = async (id: string) => {
-  const nextSteps = useNextSteps(); // returns Step[] directly
+  const nextSteps = useNextSteps();
   const alreadyCompleted = nextSteps.find((s) => s.id === id)?.completed;
 
   if (!alreadyCompleted) {
     await updateNextStep(id, true);
   }
 };
-
-
-

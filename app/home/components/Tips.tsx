@@ -1,22 +1,24 @@
-import { Card, CardContent } from '@/components/ui/card';
-import Link from 'next/link';
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 import React from "react";
 
 export const Tips = () => {
   return (
-    <Card className='hover:scale-[1.01] transition'>
-      <CardContent className='p-5 space-y-2'>
-        <h2 className='text-base font-semibold text-gray-900'>
-          Tips & Recommendations
-        </h2>
-        <p className='text-sm text-muted-foreground'>
-          Did you know you can export signed waivers as CSV? Save time when
-          organizing records.
-        </p>
-        <Link href='/faq' className='text-teal-500 text-sm hover:underline'>
-          Learn more →
-        </Link>
-      </CardContent>
-    </Card>
+    <div className='rounded-lg border bg-white p-5 space-y-2'>
+      <h2 className='text-sm font-medium text-muted-foreground'>
+        Tips & Recommendations
+      </h2>
+      <ul className='text-sm space-y-1'>
+        <li>💡 Did you know you can export signed waivers as CSV?</li>
+        <li>⏱ Save time when organizing records.</li>
+        <li>
+          👉 Learn more in our{" "}
+          <a href='#' className='underline hover:text-primary'>
+            Help Center
+          </a>
+          .
+        </li>
+      </ul>
+    </div>
   );
 };

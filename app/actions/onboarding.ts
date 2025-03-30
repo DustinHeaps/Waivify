@@ -3,6 +3,7 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { utapi } from "../api/uploadthing/core";
 import { trackEvent } from "@/lib/posthog/posthog.server";
+import { prisma } from '@/lib/prisma';
 
 export async function completeOnboarding(data: any) {
   const { userId } = auth();
@@ -11,7 +12,10 @@ export async function completeOnboarding(data: any) {
   await clerkClient.users.updateUser(userId, {
     publicMetadata: {
       onboardingComplete: true,
-
+      companyName: data.name,
+      plan: "free",
+      waiversUsed: 0,
+      teamSize: 1,
       ...data,
     },
   });
@@ -65,3 +69,17 @@ export async function updateNextStep(stepId: string, completed: boolean) {
     },
   });
 }
+
+
+// export async function resetMonthlyWaiverCounts() {
+//   await prisma.user.updateMany({
+//     where: {
+//       NOT: { plan: "pro" }, // only reset free tier users if you want
+//     },
+//     data: {
+//       waiverCount: 0,
+//     },
+//   });
+
+//   console.log("✅ Monthly waiver counts reset");
+// }
