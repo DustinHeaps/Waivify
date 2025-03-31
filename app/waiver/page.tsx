@@ -29,7 +29,7 @@ export default async function WaiverPage() {
   const plan = user?.publicMetadata?.plan || "free";
 
   if (plan === "free" && waiversUsed >= 10) {
-    // redirect("/upgrade");
+    redirect("/upgrade");
   }
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
