@@ -5,8 +5,8 @@ import { prisma } from "@/lib/prisma";
 import WaiverPDF from "@/components/WaiverPDF";
 import { format } from "date-fns";
 
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
+export const runtime = "nodejs"; 
+
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
