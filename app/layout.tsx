@@ -6,7 +6,7 @@ import PostHogWrapper from "@/lib/posthog/posthogWrapper";
 import ClerkButtons from "@/components/landing/ClerkButtons";
 import { Suspense } from "react";
 
-
+export const dynamic = "force-dynamic"
 
 const inter = Inter({ subsets: ["latin"] });
 
