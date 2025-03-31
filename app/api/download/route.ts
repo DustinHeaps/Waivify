@@ -1,4 +1,4 @@
-'use client'
+
 
 
 import { downloadWaiverPdf } from '@/app/actions/waiver';

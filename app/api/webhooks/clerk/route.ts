@@ -1,4 +1,4 @@
-'use client'
+
 
 import { Webhook } from "svix";
 import { NextResponse } from "next/server";
