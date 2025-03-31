@@ -1,7 +1,5 @@
 "use server";
 
-export const dynamic = 'force-dynamic';
-
 import { prisma } from "@/lib/prisma";
 
 import { Resend } from "resend";
