@@ -1,3 +1,6 @@
+'use client'
+
+
 import { downloadWaiverPdf } from '@/app/actions/waiver';
 import { NextResponse } from "next/server";
 
