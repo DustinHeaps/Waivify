@@ -1,13 +1,11 @@
+import posthog from "posthog-js";
 
-import posthog from 'posthog-js'
-
-// const posthog = createPostHog(
-if (typeof window !== 'undefined' && !posthog.__loaded) {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || '', {
-    api_host: 'https://app.posthog.com',
+if (typeof window !== "undefined" && !posthog.__loaded) {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "", {
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://app.posthog.com",
     capture_pageview: false,
-  })
-  posthog.__loaded = true // avoid re-init on hot reload
+  });
+  posthog.__loaded = true;
 }
-// )
-export default posthog
+
+export default posthog;
