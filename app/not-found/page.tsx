@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { log404 } from "./actions/waiver";
-import { headers } from 'next/headers';
+import { headers } from "next/headers";
+import { log404 } from "../actions/waiver";
 
 export const metadata = {
   title: "Page Not Found – Waivify",
   description:
     "Oops! The page you’re looking for doesn’t exist. Return to Waivify and keep it simple.",
 };
-
 
 export default async function NotFound() {
   const pathname = headers().get("x-next-url") || "unknown";
