@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { clerkClient } from "@clerk/nextjs";
-import { utapi } from "../api/uploadthing/core";
+
 
 export const getAdminHealth = async () => {
   try {
