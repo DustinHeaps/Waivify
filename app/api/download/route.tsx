@@ -1,5 +1,3 @@
-// /app/api/download/route.ts
-
 import { NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { prisma } from "@/lib/prisma";
@@ -8,6 +6,7 @@ import WaiverPDF from "@/components/WaiverPDF";
 import { format } from "date-fns";
 
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
