@@ -8,7 +8,7 @@ export const metadata = {
     "Oops! The page you’re looking for doesn’t exist. Return to Waivify and keep it simple.",
 };
 
-export const dynamic = "force-dynamic"
+
 
 export default async function NotFound() {
   const pathname = headers().get("x-next-url") || "unknown";
