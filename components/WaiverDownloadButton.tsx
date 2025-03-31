@@ -16,17 +16,17 @@ export default function WaiverDownloadButton({ waiverId }: Props) {
         const buffer = await downloadWaiverPdf(waiverId); 
 
         // Convert Buffer to Uint8Array for Blob
-        const uint8Array = new Uint8Array(buffer);
+        // const uint8Array = new Uint8Array(buffer);
         
-        const blob = new Blob([uint8Array], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
+        // const blob = new Blob([uint8Array], { type: 'application/pdf' });
+        // const url = URL.createObjectURL(blob);
   
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `waiver-${waiverId}.pdf`;
-        a.click();
+        // const a = document.createElement("a");
+        // a.href = url;
+        // a.download = `waiver-${waiverId}.pdf`;
+        // a.click();
   
-        URL.revokeObjectURL(url);
+        // URL.revokeObjectURL(url);
       } catch (err) {
         console.error("Download failed", err);
       }
