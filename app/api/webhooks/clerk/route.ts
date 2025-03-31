@@ -4,9 +4,10 @@ import { headers } from "next/headers";
 import type { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/app/actions/user";
 
+
 export async function POST(req: Request) {
-  const webhook = "whsec_yQi8GCVluBJBeIfouq+k3w6KW6753xVp";
-  const wh = new Webhook(webhook);
+
+  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET as string);
   const rawBody = await req.text();
   const headersList = req.headers;
 
