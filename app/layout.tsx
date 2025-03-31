@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import AuthProvider from "./AuthProvider";
 import PostHogWrapper from "@/lib/posthog/posthogWrapper";
 import ClerkButtons from "@/components/landing/ClerkButtons";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -82,16 +83,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <PostHogWrapper>
-        <html lang='en'>
-          <body className={inter.className}>
-            <ClerkButtons />
-            {children}
-            <Analytics />
-          </body>
-        </html>
-      </PostHogWrapper>
-    </AuthProvider>
+    <Suspense>
+      <AuthProvider>
+        <PostHogWrapper>
+          <html lang='en'>
+            <body className={inter.className}>
+              <ClerkButtons />
+
+              {children}
+              <Analytics />
+            </body>
+          </html>
+        </PostHogWrapper>
+      </AuthProvider>
+    </Suspense>
   );
 }

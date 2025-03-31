@@ -1,5 +1,6 @@
 "use client";
 
+import { getWaiverLimit } from '@/lib/waiverUsage';
 // import { getWaiverLimit } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 
@@ -11,7 +12,7 @@ export default function WaiverLimitGuard({
   const { user } = useUser();
   const waiversUsed = Number(user?.publicMetadata?.waiversUsed) || 0;
   const plan = user?.publicMetadata?.plan || "free";
-  // const limit = getWaiverLimit(plan as string);
+  const limit = getWaiverLimit(plan as string);
 
   if (waiversUsed >= limit) {
     return (

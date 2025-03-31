@@ -1,6 +1,6 @@
 import { getWaiverByToken, markWaiverViewed } from "@/app/actions/waiver";
 import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import ExpiredWaiverPage from "../expired/page";
 
 type PageProps = {
@@ -23,7 +23,7 @@ export default async function ViewWaiverPage({ params }: PageProps) {
 
   const lastActivity = waiver.viewedAt || waiver.date;
   if (lastActivity < cutoff) {
-    return <ExpiredWaiverPage waiverId={waiver.id} />;
+    redirect(`/waiver/expired/${waiver.id}`);
   }
 
   // ✅ Mark as viewed if not already

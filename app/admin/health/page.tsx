@@ -1,11 +1,11 @@
-// app/admin/health/page.tsx
-import { getAdminHealth, getUploadthingStats } from "@/app/actions/admin";
+
+import { getAdminHealth,  } from "@/app/actions/admin";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default async function AdminHealthPage() {
   const data = await getAdminHealth();
-  const uploadStats = await getUploadthingStats();
-  const usedMB = (uploadStats.used / 1024 / 1024).toFixed(2);
+//   const uploadStats = await getUploadthingStats();
+//   const usedMB = (uploadStats.used / 1024 / 1024).toFixed(2);
 //   const fileCount = uploadStats.files;
   return (
     <div className='max-w-4xl mx-auto py-8 space-y-4'>
@@ -44,7 +44,7 @@ export default async function AdminHealthPage() {
               📦 Storage Used
             </span>
             <div className='text-2xl font-medium'>
-              {usedMB} MB
+              {/* {usedMB} MB */}
             </div>
             <p className='text-xs text-muted-foreground'>
               {/* {fileCount} files uploaded */}

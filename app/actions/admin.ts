@@ -30,33 +30,33 @@ export const getAdminHealth = async () => {
   }
 };
 
-export async function getUploadthingStats() {
-    try {
-        const res = await fetch('https://uploadthing.com/api/stats', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${process.env.UPLOADTHING_SECRET}`, 
-          },
-          cache: 'no-store',
-        });
+// export async function getUploadthingStats() {
+//     try {
+//         const res = await fetch('https://uploadthing.com/api/stats', {
+//           method: 'GET',
+//           headers: {
+//             Authorization: `Bearer ${process.env.UPLOADTHING_SECRET}`, 
+//           },
+//           cache: 'no-store',
+//         });
     
-        if (!res.ok) throw new Error('UploadThing API error');
+//         if (!res.ok) throw new Error('UploadThing API error');
     
-        const data = await res.json();
+//         const data = await res.json();
     
-        return {
-          used: data.used ?? 0, // bytes
-          fileCount: data.filesUploaded ?? 0,
-        };
-      } catch (err) {
-        console.error('Failed to fetch UploadThing stats:', err);
-        return {
-          used: 0,
-          fileCount: 0,
-        };
-      }
+//         return {
+//           used: data.used ?? 0, // bytes
+//           fileCount: data.filesUploaded ?? 0,
+//         };
+//       } catch (err) {
+//         console.error('Failed to fetch UploadThing stats:', err);
+//         return {
+//           used: 0,
+//           fileCount: 0,
+//         };
+//       }
     
-}
+// }
 
 // export const getStorageStats = async () => {
 //   try {
