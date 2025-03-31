@@ -4,7 +4,7 @@ import type { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/app/actions/user";
 import { headers } from "next/headers";
 
-export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
