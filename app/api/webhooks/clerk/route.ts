@@ -1,3 +1,5 @@
+'use client'
+
 import { Webhook } from "svix";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
