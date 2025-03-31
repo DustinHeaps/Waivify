@@ -9,7 +9,15 @@ export default function PostHogProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    posthog.capture("page_loaded");
+    if (typeof window !== "undefined") {
+      import("posthog-js").then(({ default: posthog }) => {
+        posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+          api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+          capture_pageview: false,
+        });
+        posthog.capture("page_loaded");
+      });
+    }
   }, []);
 
   return <>{children}</>;
