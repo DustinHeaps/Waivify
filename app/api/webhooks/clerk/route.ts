@@ -2,14 +2,13 @@
 
 import { Webhook } from "svix";
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 import type { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/app/actions/user";
 
 
 export async function POST(req: Request) {
 
-  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET as string);
+  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
   const rawBody = await req.text();
   const headersList = req.headers;
 
