@@ -1,11 +1,12 @@
 import { getWaiverByToken, markWaiverViewed } from "@/app/actions/waiver";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
-import ExpiredWaiverPage from "../expired/page";
 
 type PageProps = {
   params: { token: string };
 };
+
+export const dynamic = "force-dynamic"
 
 export default async function ViewWaiverPage({ params }: PageProps) {
   const waiver = await prisma.waiver.findUnique({
