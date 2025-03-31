@@ -9,7 +9,6 @@ export const metadata = {
 };
 
 
-
 export default async function NotFound() {
   const pathname = headers().get("x-next-url") || "unknown";
   await log404(pathname);
