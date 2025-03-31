@@ -74,13 +74,14 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
   signatureImage: {
-    border: "1px solid #ccc",
+    borderWidth: 1,
+    borderColor: '#ccc',
     padding: 12,
     borderRadius: 4,
     marginTop: 8,
     width: 250,
     height: 100,
-  },
+},
   footer: {
     fontSize: 10,
     color: "#6b7280",
