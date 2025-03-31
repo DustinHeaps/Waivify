@@ -7,6 +7,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
+export const dynamic = "force-dynamic"
+
+
 export default function BillingPage() {
   const { user } = useUser();
 //   const [isPending, setIsPending] = useState(false);
