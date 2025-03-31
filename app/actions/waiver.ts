@@ -194,18 +194,18 @@ export async function downloadWaiverPdf(waiverId: string) {
   }
   const formattedDate = format(waiver.signature.date, "MMMM d, yyyy");
 
-  const pdfBuffer = await renderToBuffer(
-    <WaiverPDF
-        name={waiver.signature.name}
-        date={formattedDate}
-        waiverId={waiver.signature.id}
-        signatureUrl={`https://uploadthing.com/f/${waiver.signature.fileKey}`}
-    />
-);
+//   const pdfBuffer = await renderToBuffer(
+//     <WaiverPDF
+//         name={waiver.signature.name}
+//         date={formattedDate}
+//         waiverId={waiver.signature.id}
+//         signatureUrl={`https://uploadthing.com/f/${waiver.signature.fileKey}`}
+//     />
+// );
 
-  console.log("PDF buffer size:", pdfBuffer.byteLength);
+  // console.log("PDF buffer size:", pdfBuffer.byteLength);
 
-  return new Uint8Array(pdfBuffer);
+  // return new Uint8Array(pdfBuffer);
 }
 
 export async function log404(path: string) {
