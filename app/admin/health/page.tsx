@@ -2,6 +2,8 @@
 import { getAdminHealth,  } from "@/app/actions/admin";
 import { Card, CardContent } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic"
+
 export default async function AdminHealthPage() {
   const data = await getAdminHealth();
 //   const uploadStats = await getUploadthingStats();
