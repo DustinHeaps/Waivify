@@ -2,8 +2,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { clerkClient } from "@clerk/nextjs/server";
-import { env } from '../../../env'
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2025-02-24.acacia",
 });
 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       sig,
-      env.STRIPE_WEBHOOK_SECRET
+      process.env.STRIPE_WEBHOOK_SECRET as string
     );
   } catch (err) {
     console.error("[stripe.webhook] Error verifying signature", err);
