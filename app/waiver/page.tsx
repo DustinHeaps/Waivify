@@ -4,6 +4,9 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import WaiverLimitGuard from '@/components/WaiverLimitGuard';
 
+export const dynamic = "force-dynamic"
+
+
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",
   description:
