@@ -195,13 +195,13 @@ export async function downloadWaiverPdf(waiverId: string) {
   const formattedDate = format(waiver.signature.date, "MMMM d, yyyy");
 
   const pdfBuffer = await renderToBuffer(
-    createElement(WaiverPDF, {
-      name: waiver.signature.name,
-      date: formattedDate,
-      waiverId: waiver.signature.id,
-      signatureUrl: `https://uploadthing.com/f/${waiver.signature.fileKey}`,
-    }) as React.ReactElement
-  );
+    <WaiverPDF
+        name={waiver.signature.name}
+        date={formattedDate}
+        waiverId={waiver.signature.id}
+        signatureUrl={`https://uploadthing.com/f/${waiver.signature.fileKey}`}
+    />
+);
 
   console.log("PDF buffer size:", pdfBuffer.byteLength);
 
