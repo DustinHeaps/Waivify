@@ -1,3 +1,4 @@
+import { getWaiverByToken } from '@/app/actions/waiver';
 import { notFound } from "next/navigation";
 
 interface WaiverDetailProps {
@@ -20,21 +21,21 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
           <strong>Name:</strong> {waiver.name}
         </p>
         <p>
-          <strong>Date:</strong> {new Date(waiver.createdAt).toLocaleString()}
+          <strong>Date:</strong> {new Date(waiver.date).toLocaleString()}
         </p>
         <p>
           <strong>ID:</strong> {waiver.id}
         </p>
-        {waiver.ip && (
+        {waiver.ipAddress && (
           <p>
-            <strong>IP Address:</strong> {waiver.ip}
+            <strong>IP Address:</strong> {waiver.ipAddress}
           </p>
         )}
       </div>
 
       <div className='border-t pt-4'>
         <h2 className='text-lg font-medium mb-2'>Waiver Terms</h2>
-        <p className='whitespace-pre-wrap'>{waiver.termsText}</p>
+        <p className='whitespace-pre-wrap'>{waiver.terms}</p>
         <ul className='mt-4 space-y-1'>
           <li>✅ Release of liability: {waiver.liability ? "Yes" : "No"}</li>
           <li>✅ Accepted terms: {waiver.terms ? "Yes" : "No"}</li>
@@ -43,15 +44,15 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
 
       <div>
         <h2 className='text-lg font-medium mb-2'>Signature</h2>
-        {waiver.signatureUrl ? (
+        {/* {waiver.signatureUrl ? (
           <img
             src={waiver.signatureUrl}
             alt='Signature'
             className='w-full max-w-sm'
           />
-        ) : (
+        ) : ( */}
           <p>No signature on file.</p>
-        )}
+        {/* )} */}
       </div>
 
       <div className='flex gap-4'>
@@ -66,16 +67,4 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
   );
 }
 
-// Dummy function - replace with real DB logic
-async function getWaiverByToken(id: string) {
-  return {
-    id,
-    name: "John Doe",
-    createdAt: Date.now(),
-    terms: true,
-    liability: true,
-    signatureUrl: "/signatures/sig1.png",
-    termsText: "I agree to the terms and conditions of the waiver...",
-    ip: "192.168.1.123",
-  };
-}
+
