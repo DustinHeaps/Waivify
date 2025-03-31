@@ -15,7 +15,7 @@ export async function uploadSignature(formData: FormData, waiverId: string) {
   const name = formData.get("name") as string;
   const date = `${formData.get("date")}T00:00:00Z`;
 
-  // Upload to UploadThing
+
   const uploaded = await utapi.uploadFiles(files);
 
   const file = uploaded[0]?.data;
