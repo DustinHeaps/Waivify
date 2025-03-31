@@ -121,13 +121,7 @@ export default function WaiverPDF({
 
           <View style={styles.section}>
             <Text style={styles.label}>Date:</Text>
-            <Text style={styles.value}>
-              {new Date(date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </Text>
+            <Text style={styles.value}>{date}</Text>
           </View>
 
           <View style={styles.section}>
