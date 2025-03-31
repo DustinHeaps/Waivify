@@ -4,8 +4,6 @@ import type { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/app/actions/user";
 import { headers } from "next/headers";
 
-
-
 export async function POST(req: Request) {
   // Get the headers
   const headerPayload = headers();
