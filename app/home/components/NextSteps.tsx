@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import clsx from "clsx";
-import { updateNextStep } from "@/app/actions/onboarding";
 
 const GROUP_SIZE = 3;
 

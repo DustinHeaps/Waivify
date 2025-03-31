@@ -11,10 +11,7 @@ import { Changelog } from "./components/Changelog";
 import { Hero } from "./components/Hero";
 import { NextSteps } from "./components/NextSteps";
 
-
-
 export default async function HomePage() {
-
   return (
     <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-12'>
       <Hero />

@@ -1,6 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
-import React from "react";
-
 export const Changelog = () => {
   return (
     <div className="rounded-lg border bg-white p-5 space-y-3">

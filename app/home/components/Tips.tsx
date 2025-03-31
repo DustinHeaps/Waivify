@@ -1,7 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import React from "react";
-
 export const Tips = () => {
   return (
     <div className='rounded-lg border bg-white p-5 space-y-2'>

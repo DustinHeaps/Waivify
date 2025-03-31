@@ -1,6 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
-import React from "react";
-
 type EmptyStateProps = {
   title: string;
   description: string;
@@ -25,6 +22,12 @@ export const RecentActivities = () => {
       <h2 className='text-sm font-medium text-muted-foreground'>
         Recent Activity
       </h2>
+
+      {/* <EmptyState
+title='No activity yet'
+description='Your recent activity will show here when you start collecting waivers.'
+/> */}
+
       <ul className='text-sm space-y-1'>
         <li>✅ 2 waivers signed this week</li>
         <li>📄 5 active waivers</li>
@@ -33,10 +36,3 @@ export const RecentActivities = () => {
     </div>
   );
 };
-
-{
-  /* <EmptyState
-title='No activity yet'
-description='Your recent activity will show here when you start collecting waivers.'
-/> */
-}

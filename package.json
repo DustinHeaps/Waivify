@@ -40,6 +40,7 @@
     "react-transition-group": "^4.4.5",
     "resend": "^4.1.2",
     "stripe": "^17.7.0",
+    "svix": "^1.62.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^7.5.2",

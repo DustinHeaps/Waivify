@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { useRef } from "react";
 import { useCountUp } from "react-countup";
 
