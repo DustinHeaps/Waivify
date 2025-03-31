@@ -1,32 +1,35 @@
-
-import { headers } from 'next/headers';
-import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
-import { clerkClient } from '@clerk/nextjs/server';
-import { env } from '@/env'; 
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import Stripe from "stripe";
+import { clerkClient } from "@clerk/nextjs/server";
+import { env } from '../../../env'
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-02-24.acacia",
 });
 
 export async function POST(req: Request) {
-  const sig = headers().get('stripe-signature') as string;
+  const sig = headers().get("stripe-signature") as string;
   const body = await req.text();
 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(
+      body,
+      sig,
+      env.STRIPE_WEBHOOK_SECRET
+    );
   } catch (err) {
-    console.error('[stripe.webhook] Error verifying signature', err);
-    return new NextResponse('Webhook Error', { status: 400 });
+    console.error("[stripe.webhook] Error verifying signature", err);
+    return new NextResponse("Webhook Error", { status: 400 });
   }
 
   switch (event.type) {
-    case 'checkout.session.completed': {
+    case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.userId;
 
-      if (!userId) return new NextResponse('Missing userId', { status: 400 });
+      if (!userId) return new NextResponse("Missing userId", { status: 400 });
 
       // ✅ store subscription status in Clerk
       await clerkClient.users.updateUserMetadata(userId, {
@@ -39,15 +42,17 @@ export async function POST(req: Request) {
         },
       });
 
-      console.log(`[stripe.webhook] User ${userId} upgraded to ${session.metadata?.plan}`);
+      console.log(
+        `[stripe.webhook] User ${userId} upgraded to ${session.metadata?.plan}`
+      );
       break;
     }
 
-    case 'customer.subscription.deleted': {
+    case "customer.subscription.deleted": {
       const subscription = event.data.object as Stripe.Subscription;
       const userId = subscription.metadata?.userId;
 
-      if (!userId) return new NextResponse('Missing userId', { status: 400 });
+      if (!userId) return new NextResponse("Missing userId", { status: 400 });
 
       await clerkClient.users.updateUserMetadata(userId, {
         publicMetadata: {

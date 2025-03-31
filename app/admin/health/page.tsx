@@ -6,7 +6,7 @@ export default async function AdminHealthPage() {
   const data = await getAdminHealth();
   const uploadStats = await getUploadthingStats();
   const usedMB = (uploadStats.used / 1024 / 1024).toFixed(2);
-  const fileCount = uploadStats.files;
+//   const fileCount = uploadStats.files;
   return (
     <div className='max-w-4xl mx-auto py-8 space-y-4'>
       <h1 className='text-2xl font-semibold'>Admin Health Dashboard</h1>
@@ -47,7 +47,7 @@ export default async function AdminHealthPage() {
               {usedMB} MB
             </div>
             <p className='text-xs text-muted-foreground'>
-              {fileCount} files uploaded
+              {/* {fileCount} files uploaded */}
             </p>
           </CardContent>
         </Card>
