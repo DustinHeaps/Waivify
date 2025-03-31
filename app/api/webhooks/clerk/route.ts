@@ -5,6 +5,13 @@ import { createUser } from "@/app/actions/user";
 import { headers } from "next/headers";
 
 export async function POST(req: Request) {
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+
+  if (!WEBHOOK_SECRET) {
+    throw new Error(
+      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
+    );
+  }
   // Get the headers
   const headerPayload = headers();
   const svix_id = headerPayload.get("svix-id");
@@ -23,7 +30,7 @@ export async function POST(req: Request) {
   const body = JSON.stringify(payload);
 
   // Create a new SVIX instance with your secret.
-  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
+  const wh = new Webhook(WEBHOOK_SECRET);
 
   let evt: WebhookEvent;
 
