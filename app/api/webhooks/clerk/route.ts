@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import type { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/app/actions/user";
 
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
 
